@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceApplication
+  Name="LightSwitchServiceApplication" xmlns="http://schemas.microsoft.com/LightSwitch/2010/xaml/model">
+  <ServiceApplication.Attributes>
+    <Partial />
+  </ServiceApplication.Attributes>
+  <EntityType
+    Name="Produit">
+    <EntityType.Methods>
+      <EntityMethod
+        Name="Delete">
+        <EntityMethod.Attributes>
+          <Generated />
+        </EntityMethod.Attributes>
+      </EntityMethod>
+    </EntityType.Methods>
+    <EntityType.Properties>
+      <KeyProperty
+        Name="Id"
+        PropertyType=":Int32">
+        <KeyProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </KeyProperty.Attributes>
+      </KeyProperty>
+      <EntityProperty
+        Name="Nom"
+        PropertyType=":String?">
+        <EntityProperty.Attributes>
+          <Computed />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="CachedNom"
+        PropertyType=":String?">
+        <EntityProperty.Attributes>
+          <MaxLength
+            Value="255" />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="IsModele"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Computed />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <NavigationProperty
+        Name="Modele"
+        Association="Produit_Modele"
+        FromEnd="Produit"
+        ToEnd="Modele" />
+      <NavigationProperty
+        Name="Item"
+        Association="Item_Produit"
+        FromEnd="Produit"
+        ToEnd="Item" />
+      <EntityProperty
+        Name="Autre"
+        PropertyType=":String?">
+        <EntityProperty.Attributes>
+          <MaxLength
+            Value="255" />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <NavigationProperty
+        Name="AjoutBC"
+        Association="AjoutBC_Produit"
+        FromEnd="Produit"
+        ToEnd="AjoutBC" />
+      <NavigationProperty
+        Name="ModelesInseres"
+        Association="ModeleInsere_Produit"
+        FromEnd="Produit"
+        ToEnd="ModeleInsere" />
+      <NavigationProperty
+        Name="ProduitOptionsBC"
+        Association="ProduitOptionBC_Produit"
+        FromEnd="Produit"
+        ToEnd="ProduitOptionBC" />
+      <NavigationProperty
+        Name="ProjetProduits"
+        Association="ProjetProduit_Produit"
+        FromEnd="Produit"
+        ToEnd="ProjetProduit" />
+      <EntityProperty
+        Name="RowVersion"
+        PropertyType=":RowVersion">
+        <EntityProperty.Attributes>
+          <Hidden />
+          <UseForConcurrency />
+          <Generated />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+    </EntityType.Properties>
+  </EntityType>
+  <EntityContainer
+    Name="ApplicationData">
+    <EntityContainer.Attributes>
+      <Partial />
+    </EntityContainer.Attributes>
+    <EntitySet
+      Name="Produits"
+      CanDelete="True"
+      CanInsert="True"
+      CanUpdate="True"
+      EntityType="Produit" />
+    <QueryOperation
+      Name="Produits_Single"
+      ReturnType="Produit">
+      <QueryOperation.Attributes>
+        <Generated />
+        <Description
+          Value="Returns the entity whose identity is specified by the parameter(s)." />
+      </QueryOperation.Attributes>
+      <QueryOperation.FilterExpression>
+        <QueryFilterExpressionTree>
+          <BinaryExpression
+            NodeType="Equal">
+            <BinaryExpression.Left>
+              <ChainExpression>
+                <MemberExpression
+                  Member="Id" />
+              </ChainExpression>
+            </BinaryExpression.Left>
+            <BinaryExpression.Right>
+              <ParameterExpression
+                Parameter="Id" />
+            </BinaryExpression.Right>
+          </BinaryExpression>
+        </QueryFilterExpressionTree>
+      </QueryOperation.FilterExpression>
+      <QueryOperation.Source>
+        <QuerySourceExpressionTree>
+          <MemberExpression
+            Member="Produits" />
+        </QuerySourceExpressionTree>
+      </QueryOperation.Source>
+      <QueryOperationParameter
+        Name="Id"
+        ParameterType=":Int32?">
+        <QueryOperationParameter.Attributes>
+          <Description
+            Value="The value of the 'Id' key property of the entity to retrieve." />
+        </QueryOperationParameter.Attributes>
+      </QueryOperationParameter>
+    </QueryOperation>
+    <QueryOperation
+      Name="Produits_SingleOrDefault"
+      ReturnType="Produit">
+      <QueryOperation.Attributes>
+        <Generated />
+        <Description
+          Value="Returns the entity whose identity is specified by the parameter(s) or null if no such entity exists." />
+      </QueryOperation.Attributes>
+      <QueryOperation.FilterExpression>
+        <QueryFilterExpressionTree>
+          <BinaryExpression
+            NodeType="Equal">
+            <BinaryExpression.Left>
+              <ChainExpression>
+                <MemberExpression
+                  Member="Id" />
+              </ChainExpression>
+            </BinaryExpression.Left>
+            <BinaryExpression.Right>
+              <ParameterExpression
+                Parameter="Id" />
+            </BinaryExpression.Right>
+          </BinaryExpression>
+        </QueryFilterExpressionTree>
+      </QueryOperation.FilterExpression>
+      <QueryOperation.Source>
+        <QuerySourceExpressionTree>
+          <MemberExpression
+            Member="Produits" />
+        </QuerySourceExpressionTree>
+      </QueryOperation.Source>
+      <QueryOperationParameter
+        Name="Id"
+        ParameterType=":Int32?">
+        <QueryOperationParameter.Attributes>
+          <Description
+            Value="The value of the 'Id' key property of the entity to retrieve." />
+        </QueryOperationParameter.Attributes>
+      </QueryOperationParameter>
+    </QueryOperation>
+    <AssociationSet
+      Name="ProjetProduit_Produits"
+      Association="ProjetProduit_Produit">
+      <AssociationSetEnd
+        Name="ProjetProduit"
+        EntitySet="ProjetProduits" />
+      <AssociationSetEnd
+        Name="Produit"
+        EntitySet="Produits" />
+    </AssociationSet>
+    <AssociationSet
+      Name="ProduitOptionBC_ProduitSet"
+      Association="ProduitOptionBC_Produit">
+      <AssociationSetEnd
+        Name="ProduitOptionBC"
+        EntitySet="ProduitOptionsBC" />
+      <AssociationSetEnd
+        Name="Produit"
+        EntitySet="Produits" />
+    </AssociationSet>
+    <AssociationSet
+      Name="ModeleInsere_ProduitSet"
+      Association="ModeleInsere_Produit">
+      <AssociationSetEnd
+        Name="ModeleInsere"
+        EntitySet="ModelesInseres" />
+      <AssociationSetEnd
+        Name="Produit"
+        EntitySet="Produits" />
+    </AssociationSet>
+  </EntityContainer>
+  <DataService
+    Name="ApplicationDataMapping">
+    <DataService.Attributes>
+      <Partial />
+    </DataService.Attributes>
+    <EntitySetMapping
+      EntitySet="Produits">
+      <EntitySetMapping.Attributes>
+        <SsdlForeignKeyProperty
+          Name="ExtensionBC_Produit"
+          Nullable="True"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="SystemeBC_Produit"
+          Nullable="True"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="Produit_Projet"
+          Nullable="False"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="Projet_Produit"
+          Nullable="False"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="Projet_Produit1"
+          Nullable="False"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="AjoutBC_Produit"
+          Nullable="True"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="OptionBC_Produit"
+          Nullable="True"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="Item_Produit"
+          Nullable="True"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="Produit_Modele"
+          Nullable="True"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="Produit_Modele1"
+          Nullable="False"
+          Type="int" />
+      </EntitySetMapping.Attributes>
+    </EntitySetMapping>
+    <AssociationSetMapping
+      AssociationSet="ProjetProduit_Produits">
+      <AssociationSetMapping.Attributes>
+        <SsdlAssociationSet
+          Name="ProjetProduit_Produits" />
+        <SsdlAssociationSetEnd
+          End="ApplicationData/Members[ProjetProduit_Produits]/Members[ProjetProduit]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="ProjetProduit_Produit" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+        <SsdlAssociationSetEnd
+          End="ApplicationData/Members[ProjetProduit_Produits]/Members[Produit]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="Id" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+      </AssociationSetMapping.Attributes>
+    </AssociationSetMapping>
+    <AssociationSetMapping
+      AssociationSet="ProduitOptionBC_ProduitSet">
+      <AssociationSetMapping.Attributes>
+        <SsdlAssociationSet
+          Name="ProduitOptionBC_ProduitSet" />
+        <SsdlAssociationSetEnd
+          End="ApplicationData/Members[ProduitOptionBC_ProduitSet]/Members[ProduitOptionBC]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="ProduitOptionBC_Produit" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+        <SsdlAssociationSetEnd
+          End="ApplicationData/Members[ProduitOptionBC_ProduitSet]/Members[Produit]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="Id" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+      </AssociationSetMapping.Attributes>
+    </AssociationSetMapping>
+    <AssociationSetMapping
+      AssociationSet="ModeleInsere_ProduitSet">
+      <AssociationSetMapping.Attributes>
+        <SsdlAssociationSet
+          Name="ModeleInsere_ProduitSet" />
+        <SsdlAssociationSetEnd
+          End="ApplicationData/Members[ModeleInsere_ProduitSet]/Members[ModeleInsere]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="ModeleInsere_Produit" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+        <SsdlAssociationSetEnd
+          End="ApplicationData/Members[ModeleInsere_ProduitSet]/Members[Produit]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="Id" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+      </AssociationSetMapping.Attributes>
+    </AssociationSetMapping>
+  </DataService>
+  <Association
+    Name="ProjetProduit_Produit">
+    <AssociationEnd
+      Name="ProjetProduit"
+      Multiplicity="Many"
+      EntityType="ProjetProduit" />
+    <AssociationEnd
+      Name="Produit"
+      Multiplicity="One"
+      EntityType="Produit">
+      <AssociationEnd.Attributes>
+        <DeleteRule
+          Action="Cascade" />
+      </AssociationEnd.Attributes>
+    </AssociationEnd>
+  </Association>
+  <Association
+    Name="ProduitOptionBC_Produit">
+    <AssociationEnd
+      Name="ProduitOptionBC"
+      Multiplicity="Many"
+      EntityType="ProduitOptionBC" />
+    <AssociationEnd
+      Name="Produit"
+      Multiplicity="One"
+      EntityType="Produit">
+      <AssociationEnd.Attributes>
+        <DeleteRule
+          Action="Cascade" />
+      </AssociationEnd.Attributes>
+    </AssociationEnd>
+  </Association>
+  <Association
+    Name="ModeleInsere_Produit">
+    <AssociationEnd
+      Name="ModeleInsere"
+      Multiplicity="Many"
+      EntityType="ModeleInsere" />
+    <AssociationEnd
+      Name="Produit"
+      Multiplicity="One"
+      EntityType="Produit">
+      <AssociationEnd.Attributes>
+        <DeleteRule
+          Action="Cascade" />
+      </AssociationEnd.Attributes>
+    </AssociationEnd>
+  </Association>
+</ServiceApplication>

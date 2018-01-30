@@ -1,0 +1,428 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ServerProjectReference>..\SoumissionsTest.Server\SoumissionsTest.Server.csproj</ServerProjectReference>
+    <ClientProjectName>DesktopClient</ClientProjectName>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectTypeGuids>{8BB0C5E8-0616-4F60-8E55-A43933E57E9C};{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{EF23CF19-5424-4C58-8130-F25074486FED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>LightSwitchApplication</RootNamespace>
+    <AssemblyName>SoumissionsTest.DesktopClient</AssemblyName>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <LightSwitchVersion>v5.0</LightSwitchVersion>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>true</SilverlightApplication>
+    <DefaultLanguage>fr</DefaultLanguage>
+    <SupportedCultures>fr</SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>SoumissionsTest.DesktopClient.xap</XapFilename>
+    <XapOutputFile>SoumissionsTest.DesktopClient.xap</XapOutputFile>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>
+    </SilverlightAppEntry>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <EnableOutOfBrowser>True</EnableOutOfBrowser>
+    <TestPageFileName>default.htm</TestPageFileName>
+    <CreateTestPage>false</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <LightSwitchDisplayName>DesktopClient</LightSwitchDisplayName>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <LightSwitchProjectTypeV45>Client</LightSwitchProjectTypeV45>
+    <LightSwitchProjectSubType>Silverlight</LightSwitchProjectSubType>
+    <MicrosoftSdkDir Condition=" '$(MicrosoftSdkDir)' == '' ">$([System.IO.Path]::Combine($(MSBuildProgramFiles32), 'Microsoft SDKs'))</MicrosoftSdkDir>
+    <LightSwitchSDKPath Condition=" '$(LightSwitchSDKPath)' == '' ">$([System.IO.Path]::Combine($(MicrosoftSdkDir), 'LightSwitch', $(LightSwitchVersion)))</LightSwitchSDKPath>
+    <LightSwitchSDKPath Condition=" '$(LightSwitchSDKPath)' != '' and !HasTrailingSlash('$(LightSwitchSDKPath)')">$(LightSwitchSDKPath)\</LightSwitchSDKPath>
+    <WCFRIASERVICESSDKPath Condition=" '$(WCFRIASERVICESSDKPath)' == '' ">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WCFRIAServices\v5.2@InstallPath)</WCFRIASERVICESSDKPath>
+    <WCFRIASERVICESSDKPath Condition=" '$(WCFRIASERVICESSDKPath)' == '' ">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\WCFRIAServices\v5.2@InstallPath)</WCFRIASERVICESSDKPath>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <SignManifests>True</SignManifests>
+    <ManifestCertificateThumbprint>38FB8A4F627774259655FD6FD9D9089E4F39E178</ManifestCertificateThumbprint>
+    <ManifestKeyFile>SoumissionsTest_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ApplicationName>Soumissions</ApplicationName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1522</NoWarn>
+    <UseDesignTimeFeatures>true</UseDesignTimeFeatures>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1522</NoWarn>
+    <UseDesignTimeFeatures>false</UseDesignTimeFeatures>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C1.LightSwitch.Chart.Client">
+      <HintPath>..\_Pvt_Extensions\C1.LightSwitch.Chart\Client\Reference\C1.LightSwitch.Chart.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="C1.LightSwitch.Chart.Client.Design">
+      <HintPath>..\_Pvt_Extensions\C1.LightSwitch.Chart\Client\DebugOnlyRef\C1.LightSwitch.Chart.Client.Design.dll</HintPath>
+      <ExtensionReferenceType>DebugOnly</ExtensionReferenceType>
+    </Reference>
+    <Reference Include="C1.LightSwitch.Chart.Common">
+      <HintPath>..\_Pvt_Extensions\C1.LightSwitch.Chart\Client\Reference\C1.LightSwitch.Chart.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="C1.Silverlight.5, Version=5.0.20152.479, Culture=neutral, PublicKeyToken=2aa4ec5576d6c3ce, processorArchitecture=MSIL" />
+    <Reference Include="C1.Silverlight.Chart.5, Version=5.0.20152.479, Culture=neutral, PublicKeyToken=2aa4ec5576d6c3ce, processorArchitecture=MSIL" />
+    <Reference Include="C1.Silverlight.Chart.Editor.5, Version=5.0.20152.479, Culture=neutral, PublicKeyToken=2aa4ec5576d6c3ce, processorArchitecture=MSIL" />
+    <Reference Include="C1.Silverlight.Chart.Extended.5, Version=5.0.20152.479, Culture=neutral, PublicKeyToken=2aa4ec5576d6c3ce, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.LightSwitch, Version=10.0.14.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.dll</HintPath>
+      <Private>True</Private>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Base.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.Base.Client.dll</HintPath>
+      <Private>True</Private>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Client, Version=10.0.14.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.Client.dll</HintPath>
+      <Private>True</Private>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Client.Internal, Version=10.0.14.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.Client.Internal.dll</HintPath>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Cosmopolitan.Client">
+      <HintPath>..\_Pvt_Extensions\Microsoft.LightSwitch.Cosmopolitan\Client\Reference\Microsoft.LightSwitch.Cosmopolitan.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Extensions.Client">
+      <HintPath>..\_Pvt_Extensions\Microsoft.LightSwitch.Extensions\Client\Reference\Microsoft.LightSwitch.Extensions.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Extensions.Design.Client">
+      <HintPath>..\_Pvt_Extensions\Microsoft.LightSwitch.Extensions\ClientGen\DebugOnlyRef\Microsoft.LightSwitch.Extensions.Design.Client.dll</HintPath>
+      <ExtensionReferenceType>DebugOnly</ExtensionReferenceType>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.SDKProxy, Version=10.0.14.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.SDKProxy.dll</HintPath>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.CodeMarker, Version=14.0.0.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.CodeMarker.dll</HintPath>
+      <Private>True</Private>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.ExportProvider, Version=10.0.14.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.ExportProvider.dll</HintPath>
+      <Private>True</Private>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.ManifestService.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.ManifestService.Client.dll</HintPath>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.LightSwitch.Model.Xaml.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=8e9329cecb4700e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.LightSwitch.Model.Xaml.Client.dll</HintPath>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm.SL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.Data.Edm.SL.dll</HintPath>
+      <Private>True</Private>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client.SL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LightSwitchSDKPath)\Client\Microsoft.Data.Services.Client.SL.dll</HintPath>
+      <Private>True</Private>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition">
+      <SpecificVersion>False</SpecificVersion>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <SpecificVersion>False</SpecificVersion>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.ServiceModel.Extensions">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Client.Web, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(WCFRIASERVICESSDKPath)\v1.0\Libraries\Silverlight\System.ServiceModel.DomainServices.Client.Web.dll</HintPath>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.ServiceModel.PollingDuplex">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web.Extensions">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Browser">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Data">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Controls">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Data.Input">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Input">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Navigation">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Controls.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=1dd0be75816bbb62, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(WCFRIASERVICESSDKPath)\v1.0\Libraries\Silverlight\System.Windows.Controls.DomainServices.dll</HintPath>
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Windows.Data">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="mscorlib">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="system">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Core">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Net">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Xml">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <ProjectCritical>True</ProjectCritical>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ServiceMetadataReference Include="..\SoumissionsTest.Server\SoumissionsTest.Server.csproj">
+      <Visible>false</Visible>
+    </ServiceMetadataReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Distributeur.lsml.cs">
+      <Link>UserCode\Shared\Distributeur.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Entrepreneur.lsml.cs">
+      <Link>UserCode\Shared\Entrepreneur.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Etape.lsml.cs">
+      <Link>UserCode\Shared\Etape.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Ingenieur.lsml.cs">
+      <Link>UserCode\Shared\Ingenieur.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Modele.lsml.cs">
+      <Link>UserCode\Shared\Modele.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\OptionBC.lsml.cs">
+      <Link>UserCode\Shared\OptionBC.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Produit.lsml.cs">
+      <Link>UserCode\Shared\Produit.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Projet.lsml.cs">
+      <Link>UserCode\Shared\Projet.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\ProjetEtape.lsml.cs">
+      <Link>UserCode\Shared\ProjetEtape.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\ProjetProduit.lsml.cs">
+      <Link>UserCode\Shared\ProjetProduit.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Rapport.lsml.cs">
+      <Link>UserCode\Shared\Rapport.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Vendeur.lsml.cs">
+      <Link>UserCode\Shared\Vendeur.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\VendeurRapport.lsml.cs">
+      <Link>UserCode\Shared\VendeurRapport.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\UserCode\Shared\EtapeList.cs">
+      <Link>UserCode\Shared\EtapeList.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\AjoutBCDetail.lsml.cs">
+      <DependentUpon>AjoutBCDetail.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\EtapeDetail.lsml.cs">
+      <DependentUpon>EtapeDetail.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\NouveauModele.lsml.cs">
+      <DependentUpon>NouveauModele.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\NouveauProjet.lsml.cs">
+      <DependentUpon>NouveauProjet.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\OptionBCDetail.lsml.cs">
+      <DependentUpon>OptionBCDetail.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ProduitDetail.lsml.cs">
+      <DependentUpon>ProduitDetail.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ProjetDetail.lsml.cs">
+      <DependentUpon>ProjetDetail.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\CommandesHebdo.lsml.cs">
+      <DependentUpon>CommandesHebdo.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\RapportDetail.lsml.cs">
+      <DependentUpon>RapportDetail.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\SearchProjets.lsml.cs">
+      <DependentUpon>SearchProjets.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\SearchRapports.lsml.cs">
+      <DependentUpon>SearchRapports.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\SearchVendeurs.lsml.cs">
+      <DependentUpon>SearchVendeurs.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\SuiviProduits.lsml.cs">
+      <DependentUpon>SuiviProduits.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\VendeurDetail.lsml.cs">
+      <DependentUpon>VendeurDetail.lsml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCode\Application.cs" />
+    <Compile Include="UserCode\ClientUtilities.cs" />
+    <Compile Include="UserCode\Controls.cs" />
+    <Compile Include="UserCode\ControlsUI.cs" />
+    <Compile Include="UserCode\ModalWindow.cs" />
+    <Compile Include="UserCode\RapportScreenHelper.cs" />
+    <Compile Include="UserCode\TimeComparator.cs" />
+    <Compile Include="UserCode\ValueStringConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <LightSwitchModel Include="Properties\Client.lsml">
+      <ProjectCritical>true</ProjectCritical>
+    </LightSwitchModel>
+    <LightSwitchModel Include="Properties\ApplicationData\Vendeurs.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\Modeles.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\Projets.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\ProjetProduits.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\Produits.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\Etapes.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\Rapports.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\AjoutsBC.lsml" />
+    <LightSwitchModel Include="Properties\ApplicationData\OptionsBC.lsml" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\OutOfBrowserSettings.xml" />
+    <ClientResource Include="Properties\Config.xml" />
+    <LightSwitchModel Include="Properties\Proxies.lsml" />
+    <LightSwitchModel Include="Screens\SearchVendeurs.lsml" />
+    <LightSwitchModel Include="Screens\VendeurDetail.lsml">
+      <SubType>Designer</SubType>
+    </LightSwitchModel>
+    <LightSwitchModel Include="Screens\SearchDistributeurs.lsml" />
+    <LightSwitchModel Include="Screens\SearchEntrepreneurs.lsml" />
+    <LightSwitchModel Include="Screens\SearchIngenieurs.lsml" />
+    <LightSwitchModel Include="Screens\NouveauProjet.lsml" />
+    <LightSwitchModel Include="Screens\NouveauModele.lsml" />
+    <LightSwitchModel Include="Screens\SearchModeles.lsml" />
+    <LightSwitchModel Include="Screens\ProjetDetail.lsml" />
+    <LightSwitchModel Include="Screens\SearchProduits.lsml" />
+    <LightSwitchModel Include="Screens\ProduitDetail.lsml" />
+    <LightSwitchModel Include="Screens\SearchEtapes.lsml" />
+    <LightSwitchModel Include="Screens\EtapeDetail.lsml">
+      <SubType>Designer</SubType>
+    </LightSwitchModel>
+    <LightSwitchModel Include="Screens\SearchProjets.lsml" />
+    <LightSwitchModel Include="Screens\ProjetEtapesListDetail.lsml" />
+    <LightSwitchModel Include="Screens\SearchRapports.lsml" />
+    <LightSwitchModel Include="Screens\RapportDetail.lsml" />
+    <LightSwitchModel Include="Screens\AjoutBCDetail.lsml" />
+    <LightSwitchModel Include="Screens\SearchAjoutsBC.lsml" />
+    <LightSwitchModel Include="Screens\OptionBCDetail.lsml" />
+    <LightSwitchModel Include="Screens\SearchOptionsBC.lsml" />
+    <LightSwitchModel Include="Screens\SearchItems.lsml" />
+    <LightSwitchModel Include="Screens\CommandesHebdo.lsml" />
+    <LightSwitchModel Include="Screens\SuiviProduits.lsml" />
+    <None Include="SoumissionsTest_1_TemporaryKey.pfx" />
+    <None Include="SoumissionsTest_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ClientBuildFile Include="default.htm">
+      <SubFolder>
+      </SubFolder>
+    </_ClientBuildFile>
+    <_ClientBuildFile Include="Silverlight.js">
+      <SubFolder>
+      </SubFolder>
+    </_ClientBuildFile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SilverlightCustomControls\SilverlightCustomControls.csproj">
+      <Project>{5781c91b-e0b0-4fe9-84f8-41e387e7c05c}</Project>
+      <Name>SilverlightCustomControls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\LightSwitch\$(LightSwitchVersion)\Microsoft.LightSwitch.Build.Tasks.targets" />
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+      <FlavorProperties GUID="{8BB0C5E8-0616-4F60-8E55-A43933E57E9C}" Configuration="Debug|Any CPU">
+        <SpecializedConfiguration />
+      </FlavorProperties>
+      <FlavorProperties GUID="{8BB0C5E8-0616-4F60-8E55-A43933E57E9C}" Configuration="Release|Any CPU">
+        <SpecializedConfiguration />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,91 @@
+﻿<UserControl
+    x:Name="Modeles"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
+    x:Class="SilverlightCustomControls.ProduitEditor"
+    xmlns:lib="clr-namespace:SilverlightCustomControls"
+    mc:Ignorable="d" Width="927.667" Height="331.667">
+
+    <UserControl.Resources>
+        <lib:AutoCompleteConverter x:Key="DataConverter"/>
+        <lib:MultiBinding x:Key="MultiBinding"/>
+        <lib:CurrencyConverter x:Key="CurrencyConverter"/>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="White" RenderTransformOrigin="0.498,0.5" Margin="0,0,-1,0" Width="929" HorizontalAlignment="Right" Height="332" VerticalAlignment="Top">
+
+        <Rectangle HorizontalAlignment="Left" Height="229" Margin="21,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="681" Opacity="0.5"/>
+
+        <Canvas Margin="36,10,227,93">
+            <sdk:AutoCompleteBox x:Name="AutoCompleteModele" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120"                 
+    			ItemsSource="{Binding Path=Screen.Modeles, Mode=OneWay}"
+                SelectedItem="{Binding Path=Screen.ProjetProduits.SelectedItem.Produit.Modele, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+    			IsTextCompletionEnabled="True" Canvas.Top="33" FilterMode="Contains" SelectionChanged="AutoCompleteModele_SelectionChanged"
+                TextChanged="AutoCompleteModele_TextChanged" GotFocus="AutoCompleteModele_GotFocus" LostFocus="AutoCompleteModele_LostFocus"/>
+
+            <sdk:AutoCompleteBox x:Name="AutoCompleteItem" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120"                 
+    			ItemsSource="{Binding Path=Screen.Items, Mode=OneWay}"
+    			IsTextCompletionEnabled="True" TextChanged="AutoCompleteItem_TextChanged" Canvas.Top="100" FilterMode="Contains" 
+                GotFocus="AutoCompleteItem_GotFocus"/>
+
+            <ListBox x:Name="listBoxAjout" ItemsSource="{Binding Path=Screen.AjoutsBC}" SelectedItem="{Binding Path=Screen.ProjetProduits.SelectedItem.Produit.AjoutBC, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+                     HorizontalAlignment="Left" Height="184" VerticalAlignment="Top" Width="81" SelectionMode="Single" Canvas.Left="171" Canvas.Top="33"/>
+
+            <sdk:AutoCompleteBox x:Name="AutoCompleteInsertions" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120"               
+    			ItemsSource = "{Binding Path=Screen.InsertionsBC, Mode=OneWay}"
+    			IsTextCompletionEnabled="True" IsEnabled="False" Canvas.Left="300" Canvas.Top="33" FilterMode="Contains"/>
+
+            <sdk:Label x:Name="lblInsertions" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Insertions:" FontSize="13.333" Canvas.Left="300" Canvas.Top="5" FontWeight="Bold"/>
+
+            <sdk:Label x:Name="lblModele" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Modele:" FontSize="13.333" Canvas.Top="5" FontWeight="Bold"/>
+            <sdk:Label x:Name="lblItem" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Item:" FontSize="13.333" Canvas.Top="72" FontWeight="Bold"/>
+            <sdk:Label x:Name="lblOptions" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="67" Content="Options:" FontSize="13.333" Canvas.Left="491" Canvas.Top="5" FontWeight="Bold"/>
+            <sdk:Label x:Name="lblAjout" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Ajout:" FontSize="13.333" Canvas.Left="171" Canvas.Top="5" FontWeight="Bold"/>
+            <TextBox x:Name="TextBoxAutre" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120"
+            	     TextChanged="TextBoxAutre_TextChanged" Canvas.Top="166" 
+                     Text="{Binding Path=Screen.ProjetProduits.SelectedItem.Produit.Autre, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                     GotFocus="TextBoxAutre_GotFocus"/>
+            <sdk:Label x:Name="lblAutre" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Autre:" FontSize="13.333" Canvas.Top="138" FontWeight="Bold"/>
+            <Button x:Name="btnAdd" Content="+" Canvas.Left="425" Canvas.Top="33" Width="28" Height="28" FontWeight="Bold" FontSize="12" RenderTransformOrigin="-2.214,0.226" Background="{x:Null}" Click="btnAdd_Click"/>
+            <ListBox x:Name="listBoxInsertions" HorizontalAlignment="Left" Height="145" VerticalAlignment="Top" Width="120" Canvas.Left="300" Canvas.Top="72"
+                     SelectionMode="Single"/>
+            <Button x:Name="btnRemove" Content="-" Canvas.Left="425" Canvas.Top="72" Width="28" Height="28" FontWeight="Bold" FontSize="12" RenderTransformOrigin="-2.214,0.226" Background="{x:Null}" Click="btnRemove_Click"/>
+            <sdk:AutoCompleteBox x:Name="AutoCompleteOptions" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120"               
+                ItemsSource = "{Binding Path=Screen.OptionsBC, Mode=OneWay}"
+                IsTextCompletionEnabled="True" IsEnabled="False" Canvas.Left="491" Canvas.Top="33" FilterMode="Contains"/>
+            <Button x:Name="btnAddOption" Content="+" Canvas.Left="616" Canvas.Top="33" Width="28" Height="28" FontWeight="Bold" FontSize="12" RenderTransformOrigin="-2.214,0.226" Background="{x:Null}" Click="btnAddOption_Click"/>
+            <ListBox x:Name="listBoxOptions" HorizontalAlignment="Left" Height="145" VerticalAlignment="Top" Width="120" Canvas.Left="491" Canvas.Top="72"
+                SelectionMode="Single"/>
+            <Button x:Name="btnRemoveOption" Content="-" Canvas.Left="616" Canvas.Top="72" Width="28" Height="28" FontWeight="Bold" FontSize="12" RenderTransformOrigin="-2.214,0.226" Background="{x:Null}" Click="btnRemoveOption_Click"/>
+
+        </Canvas>
+
+        <Rectangle Height="229" Canvas.Left="631" Stroke="Black" Width="187" Margin="720,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Opacity="0.5"/>
+
+        <Canvas Margin="734,15,46,177">
+            <sdk:Label x:Name="lblQuantite" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Quantité:" FontSize="13.333" FontWeight="Bold"/>
+            <TextBox x:Name="txtQuantite" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Canvas.Top="28"
+                     Text="{Binding Path=Screen.ProjetProduits.SelectedItem.Quantite, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                     TextChanged="txtPrixQte_TextChanged"/>
+            <TextBox x:Name="txtPrix" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Canvas.Top="105"
+                     Text="{Binding Path=Screen.ProjetProduits.SelectedItem.PrixUnitaire, Converter={StaticResource CurrencyConverter}, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                     TextChanged="txtPrixQte_TextChanged"/>
+            <sdk:Label x:Name="lblPrix" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Prix Unitaire:" FontSize="13.333" Canvas.Top="77" FontWeight="Bold"/>
+            <sdk:Label x:Name="lblPrixTotal" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Prix Total:" FontSize="13.333" Canvas.Top="156" FontWeight="Bold"/>
+        </Canvas>
+
+        <TextBlock x:Name="txtTotal" HorizontalAlignment="Left" Height="28" Margin="734,198,0,0" TextWrapping="Wrap" 
+                   VerticalAlignment="Top" Width="120" TextAlignment="Right" FontSize="13.333" FontStyle="Italic" Loaded="totalLoaded"/>
+
+        <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="28" Margin="184,285,0,0" TextWrapping="Wrap" 
+                 VerticalAlignment="Top" Width="723" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                 Text="{Binding Screen.ProjetProduits.SelectedItem.Description, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+        <sdk:Label x:Name="lblDescription" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Description:" FontSize="13.333" FontWeight="Bold" Margin="184,262,0,0"/>
+        <TextBox x:Name="txtTag" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" 
+                Text="{Binding Screen.ProjetProduits.SelectedItem.Tag, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Margin="36,285,0,0"/>
+        <sdk:Label x:Name="lblTag" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="120" Content="Tag:" FontSize="13.333" FontWeight="Bold" Margin="36,262,0,0"/>
+    </Grid>
+</UserControl>
