@@ -6,6 +6,9 @@
   </ServiceApplication.Attributes>
   <EntityType
     Name="Projet">
+    <EntityType.Attributes>
+      <CreatedModifiedPropertiesEnabled />
+    </EntityType.Attributes>
     <EntityType.Methods>
       <EntityMethod
         Name="Delete">
@@ -255,13 +258,16 @@
         Name="SousTotal"
         PropertyType="Microsoft.LightSwitch.Extensions:Money">
         <EntityProperty.Attributes>
-          <Computed />
+          <Required />
           <Attribute
             Class="Microsoft.LightSwitch.Extensions:@MoneyProperties">
             <Property
               Name="CurrencySymbol"
               Value="$" />
           </Attribute>
+          <DecimalConstraint
+            Precision="18"
+            Scale="2" />
         </EntityProperty.Attributes>
       </EntityProperty>
       <EntityProperty
@@ -281,29 +287,16 @@
         Name="Total"
         PropertyType="Microsoft.LightSwitch.Extensions:Money">
         <EntityProperty.Attributes>
-          <Computed />
+          <Required />
           <Attribute
             Class="Microsoft.LightSwitch.Extensions:@MoneyProperties">
             <Property
               Name="CurrencySymbol"
               Value="$" />
           </Attribute>
-        </EntityProperty.Attributes>
-      </EntityProperty>
-      <EntityProperty
-        Name="CachedTotal"
-        PropertyType="Microsoft.LightSwitch.Extensions:Money?">
-        <EntityProperty.Attributes>
-          <NotSearchable />
           <DecimalConstraint
             Precision="18"
             Scale="2" />
-          <Attribute
-            Class="Microsoft.LightSwitch.Extensions:@MoneyProperties">
-            <Property
-              Name="CurrencySymbol"
-              Value="$" />
-          </Attribute>
         </EntityProperty.Attributes>
       </EntityProperty>
       <EntityProperty
@@ -407,6 +400,44 @@
           <UseForConcurrency />
           <Generated />
           <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="CreatedBy"
+        IsReadOnly="True"
+        PropertyType=":Person?">
+        <EntityProperty.Attributes>
+          <Generated />
+          <NotSearchable />
+          <MaxLength
+            Value="255" />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="Created"
+        IsReadOnly="True"
+        PropertyType=":DateTimeOffset?">
+        <EntityProperty.Attributes>
+          <Generated />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="ModifiedBy"
+        IsReadOnly="True"
+        PropertyType=":Person?">
+        <EntityProperty.Attributes>
+          <Generated />
+          <NotSearchable />
+          <MaxLength
+            Value="255" />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="Modified"
+        IsReadOnly="True"
+        PropertyType=":DateTimeOffset?">
+        <EntityProperty.Attributes>
+          <Generated />
         </EntityProperty.Attributes>
       </EntityProperty>
     </EntityType.Properties>

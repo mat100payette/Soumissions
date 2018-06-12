@@ -27,23 +27,8 @@
         Name="Nom"
         PropertyType=":String?">
         <EntityProperty.Attributes>
-          <Computed />
-        </EntityProperty.Attributes>
-      </EntityProperty>
-      <EntityProperty
-        Name="CachedNom"
-        PropertyType=":String?">
-        <EntityProperty.Attributes>
           <MaxLength
             Value="255" />
-        </EntityProperty.Attributes>
-      </EntityProperty>
-      <EntityProperty
-        Name="IsModele"
-        PropertyType=":Boolean">
-        <EntityProperty.Attributes>
-          <Computed />
-          <NotSearchable />
         </EntityProperty.Attributes>
       </EntityProperty>
       <NavigationProperty

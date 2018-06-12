@@ -1,4 +1,5 @@
-﻿using LightSwitchApplication.UserCode.Shared;
+﻿using LightSwitchApplication.UserCode;
+using LightSwitchApplication.UserCode.Shared;
 using Microsoft.LightSwitch.Presentation.Extensions;
 using Microsoft.LightSwitch.Threading;
 using SilverlightCustomControls;
@@ -29,7 +30,6 @@ namespace LightSwitchApplication
 
         partial void SearchProjets_Created()
         {
-
             bool initNouveauProjet = true;
             bool initFilterWindow = true;
             bool initFilter = true;

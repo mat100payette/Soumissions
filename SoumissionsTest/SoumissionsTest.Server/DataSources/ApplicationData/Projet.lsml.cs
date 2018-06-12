@@ -1,6 +1,7 @@
 ﻿using Microsoft.LightSwitch;
 using System.Linq;
 using System.Collections.Generic;
+using LightSwitchApplication.UserCode.Shared;
 
 namespace LightSwitchApplication
 {
@@ -13,10 +14,11 @@ namespace LightSwitchApplication
         {
             MiseMarche = false;
             Transport = false;
-            Taux = 1;
-            CachedTotal = 0M;
+            Taux = 1M;
+            SousTotal = 0M;
+            Total = 0M;
 
-            var etapes = DataWorkspace.ApplicationData.EtapesQuery().Execute().ToList();
+            List<Etape> etapes = DataWorkspace.ApplicationData.EtapesQuery().Execute().ToList();
 
             foreach (Etape etape in etapes)
             {
@@ -28,56 +30,49 @@ namespace LightSwitchApplication
             }
         }
 
-        partial void SousTotal_Compute(ref decimal result)
+        public void UpdateSousTotal()
         {
-            List<ProjetProduit> produits = (from p in ProjetProduits
-                                            where p.Projet.Equals(this)
-                                            select p).ToList();
-            decimal sousTotal;
+            List<ProjetProduit> produits = ProjetProduits.Where(pp => pp.Projet.Equals(this)).ToList();
+            decimal tempSousTotal;
 
             if (produits.Count() > 0)
             {
-                sousTotal = produits.Sum(p => p.PrixTotal) + LivraisonFlatBedPrix.GetValueOrDefault(0M) + LivraisonLtlPrix.GetValueOrDefault(0M) +
+                tempSousTotal = produits.Sum(p => p.PrixTotal) + LivraisonFlatBedPrix.GetValueOrDefault(0M) + LivraisonLtlPrix.GetValueOrDefault(0M) +
                                                                      MiseMarchePrix.GetValueOrDefault(0M) + LocationGruePrix.GetValueOrDefault(0M);
-            } else
-            {
-                sousTotal = decimal.Zero;
-            }
-
-            result = sousTotal;
-        }
-
-        partial void Total_Compute(ref decimal result)
-        {
-            decimal total;
-
-            if (EtapeEnCours == null)
-            {
-                total = decimal.Zero;
             }
             else
             {
-                ProjetEtape projetEtape = ProjetEtapes.Where(p => p.Etape == EtapeEnCours && p.Projet.Equals(this)).SingleOrDefault();
-
-                if (projetEtape != null)
-                {
-                    total = ProjetProduits.Any() ? (Taux == 0) ? decimal.Zero : SousTotal * Taux : projetEtape.Estime;
-                }
-                else
-                {
-                    total = decimal.Zero;
-                }
+                tempSousTotal = decimal.Zero;
             }
 
-            if (CachedTotal != total) { CachedTotal = total; }
+            SousTotal = tempSousTotal;
+        }
+
+        public void UpdateTotal(bool updateSousTotal = true)
+        {
+            if (updateSousTotal) UpdateSousTotal();
+
+            decimal tempTotal;
+
+            if (EtapeEnCours == null)
+            {
+                tempTotal = decimal.Zero;
+            }
+            else
+            {
+                ProjetEtape projetEtape = ProjetEtapes.Where(pe => pe.Etape == EtapeEnCours && pe.Projet.Equals(this)).SingleOrDefault();
+                
+                tempTotal = projetEtape == null ? (ProjetProduits.Any() ? (Taux == 0) ? decimal.Zero : SousTotal * Taux : projetEtape.Estime) : decimal.Zero;
+            }
 
             if (EtapeEnCours != null)
             {
                 ProjetEtape pEtape = ProjetEtapes.Where(pe => pe.Etape == EtapeEnCours).First();
-                if (pEtape.Estime != CachedTotal) { pEtape.Estime = CachedTotal.Value; }
+                if (pEtape.Estime != Total)
+                    pEtape.Estime = Total;
             }
 
-            result = total;
+            Total = tempTotal;
         }
 
         partial void Contact_Changed()

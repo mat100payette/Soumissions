@@ -76,6 +76,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <ProjectCritical>True</ProjectCritical>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <ProjectCritical>True</ProjectCritical>
     </Reference>
@@ -227,6 +228,9 @@
     <Compile Include="DataSources\ApplicationData\Produit.lsml.cs">
       <DependentUpon>Produits.lsml</DependentUpon>
     </Compile>
+    <Compile Include="DataSources\ApplicationData\ProduitProduction.lsml.cs">
+      <DependentUpon>ProduitsProduction.lsml</DependentUpon>
+    </Compile>
     <Compile Include="DataSources\ApplicationData\Projet.lsml.cs">
       <DependentUpon>Projets.lsml</DependentUpon>
     </Compile>
@@ -247,7 +251,9 @@
     </Compile>
     <Compile Include="DataSources\ApplicationData\_ApplicationDataService.lsml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserCode\FilterHelper.cs" />
+    <Compile Include="UserCode\DBExtension.cs" />
+    <Compile Include="UserCode\EntityExtensions.cs" />
+    <Compile Include="UserCode\Shared\FilterHelper.cs" />
     <Compile Include="UserCode\Shared\EtapeList.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +328,23 @@
     </LightSwitchModel>
     <LightSwitchModel Include="DataSources\ApplicationData\ProjetProduitsQuery.lsml">
       <DependentUpon>ProjetProduits.lsml</DependentUpon>
+    </LightSwitchModel>
+    <LightSwitchModel Include="DataSources\ApplicationData\ProduitsProduction.lsml" />
+    <LightSwitchModel Include="DataSources\ApplicationData\ProduitsProductionQuery.lsml">
+      <DependentUpon>ProduitsProduction.lsml</DependentUpon>
+    </LightSwitchModel>
+    <LightSwitchModel Include="DataSources\ApplicationData\ServerActions.lsml" />
+    <LightSwitchModel Include="DataSources\ApplicationData\DeleteAll.lsml">
+      <DependentUpon>ServerActions.lsml</DependentUpon>
+    </LightSwitchModel>
+    <LightSwitchModel Include="DataSources\ApplicationData\UnifyProduits.lsml">
+      <DependentUpon>ServerActions.lsml</DependentUpon>
+    </LightSwitchModel>
+    <LightSwitchModel Include="DataSources\ApplicationData\UpdateModeles.lsml">
+      <DependentUpon>ServerActions.lsml</DependentUpon>
+    </LightSwitchModel>
+    <LightSwitchModel Include="DataSources\ApplicationData\CleanProduits.lsml">
+      <DependentUpon>ServerActions.lsml</DependentUpon>
     </LightSwitchModel>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

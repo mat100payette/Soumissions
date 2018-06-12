@@ -58,19 +58,6 @@
                 </ScreenExpressionTree>
               </ContentItem.DataSource>
             </ContentItem>
-            <ContentItem
-              Name="NomComplet"
-              Kind="Value"
-              DataType=":String">
-              <ContentItem.DataSource>
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <MemberExpression
-                      Member="Modele/Properties[NomComplet]" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ContentItem.DataSource>
-            </ContentItem>
             <ContentItem.PropertySources>
               <ControlPropertySource
                 Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[VerticalAlignment]">

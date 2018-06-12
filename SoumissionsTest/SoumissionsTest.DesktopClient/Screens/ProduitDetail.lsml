@@ -34,19 +34,6 @@
             <ContentItem
               Name="left"
               Kind="Group">
-              <ContentItem
-                Name="Nom"
-                Kind="Value"
-                DataType=":String?">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="Produit/Properties[Nom]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-              </ContentItem>
               <ContentItem.PropertySources>
                 <ControlPropertySource
                   Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[BrowseOnly]">
@@ -202,6 +189,21 @@
                   </ContentItem.PropertySources>
                 </ContentItem>
                 <ContentItem
+                  Name="Projet_Nom"
+                  Kind="Value"
+                  DataType=":String">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression
+                          Member="ProjetProduit/Properties[Projet]" />
+                        <MemberExpression
+                          Member="Nom" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                </ContentItem>
+                <ContentItem
                   Name="Quantite"
                   Kind="Value"
                   DataType=":Int32">
@@ -223,19 +225,6 @@
                       <ChainExpression>
                         <MemberExpression
                           Member="ProjetProduit/Properties[PrixUnitaire]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem
-                  Name="PrixTotal"
-                  Kind="Value"
-                  DataType="Microsoft.LightSwitch.Extensions:Money">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression
-                          Member="ProjetProduit/Properties[PrixTotal]" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>

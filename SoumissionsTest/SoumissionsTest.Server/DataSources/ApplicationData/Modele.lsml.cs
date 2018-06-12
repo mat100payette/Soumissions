@@ -2,9 +2,9 @@
 {
     public partial class Modele
     {
-        partial void NomComplet_Compute(ref string result)
+        public void UpdateNom()
         {
-            result = Nom + " " + Capacite;
+            NomComplet = Nom + " " + Capacite;
         }
     }
 }

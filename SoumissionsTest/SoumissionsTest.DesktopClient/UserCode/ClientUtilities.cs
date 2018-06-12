@@ -62,6 +62,15 @@ namespace LightSwitchApplication.UserCode
             return value == null ? string.Empty : value.ToString();
         }
 
+        public static string Name<TEntity, TDetails>(this EntityStorageProperty<TEntity, TDetails, int>.Entry prop)
+            where TEntity : EntityObject<TEntity, TDetails>
+            where TDetails : EntityDetails<TEntity, TDetails>, new()
+        {
+            PropertyInfo pi = prop.GetType().GetInterfaces()[0].GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)[0];
+            object value = pi.GetGetMethod(true).Invoke(prop, new object[] { });
+            return value == null ? string.Empty : value.ToString();
+        }
+
         public static string Name<TEntity, TDetails, TValue>(this EntityReferenceProperty<TEntity, TDetails, TValue>.Entry prop)
             where TEntity : EntityObject<TEntity, TDetails>
             where TDetails : EntityDetails<TEntity, TDetails>, new()

@@ -362,23 +362,6 @@
                         </ScreenExpressionTree>
                       </ContentItem.DataSource>
                     </ContentItem>
-                    <ContentItem
-                      Name="CachedTotal"
-                      Kind="Value"
-                      DataType="Microsoft.LightSwitch.Extensions:Money?">
-                      <ContentItem.Attributes>
-                        <DisplayName
-                          Value="Total" />
-                      </ContentItem.Attributes>
-                      <ContentItem.DataSource>
-                        <ScreenExpressionTree>
-                          <ChainExpression>
-                            <MemberExpression
-                              Member="Projet/Properties[CachedTotal]" />
-                          </ChainExpression>
-                        </ScreenExpressionTree>
-                      </ContentItem.DataSource>
-                    </ContentItem>
                     <ContentItem.PropertySources>
                       <ControlPropertySource
                         Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[BrowseOnly]">

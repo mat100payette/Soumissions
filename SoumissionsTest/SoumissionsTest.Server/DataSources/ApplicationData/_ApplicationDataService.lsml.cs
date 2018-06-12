@@ -173,5 +173,43 @@ namespace LightSwitchApplication
                 }
             }
         }
+
+        partial void ProduitsProduction_Deleted(ProduitProduction entity)
+        {
+            if (entity.ProjetProduit != null)
+            {
+                entity.ProjetProduit.Quantite -= 1;
+            }
+        }
+
+        partial void DeleteAll_PreprocessQuery(ref IQueryable<ServerAction> query)
+        {
+            DBExtension.DeleteAll();
+        }
+
+        partial void UnifyProduits_PreprocessQuery(ref IQueryable<ServerAction> query)
+        {
+            DBExtension.UnifyProduits();
+        }
+
+        partial void Produits_Updating(Produit entity)
+        {
+            entity.UpdateNom();
+        }
+
+        partial void Modeles_Updating(Modele entity)
+        {
+            entity.UpdateNom();
+        }
+
+        partial void UpdateModeles_PreprocessQuery(ref IQueryable<ServerAction> query)
+        {
+            DBExtension.UpdateModeles();
+        }
+
+        partial void CleanProduits_PreprocessQuery(ref IQueryable<ServerAction> query)
+        {
+            DBExtension.CleanProduits();
+        }
     }
 }

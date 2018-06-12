@@ -46,14 +46,24 @@
                 </ScreenExpressionTree>
               </ContentItem.DataSource>
               <ContentItem
-                Name="Nom"
+                Name="Id"
                 Kind="Value"
-                DataType=":String?">
+                DataType=":Int32">
+                <ContentItem.Attributes>
+                  <ShowAsLinkSettings
+                    Value="ProduitDetail">
+                    <ShowAsLinkSettings.Attributes>
+                      <ScreenParameterMapping
+                        KeyProperty="Produit/Properties[Id]"
+                        ScreenParameter="ProduitDetail/Properties[ProduitId]" />
+                    </ShowAsLinkSettings.Attributes>
+                  </ShowAsLinkSettings>
+                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="Produit/Properties[Nom]" />
+                        Member="Produit/Properties[Id]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -69,19 +79,6 @@
                     </ScreenExpressionTree>
                   </ControlPropertySource>
                 </ContentItem.PropertySources>
-              </ContentItem>
-              <ContentItem
-                Name="CachedNom"
-                Kind="Value"
-                DataType=":String?">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="Produit/Properties[CachedNom]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
               </ContentItem>
               <ContentItem
                 Name="Modele"

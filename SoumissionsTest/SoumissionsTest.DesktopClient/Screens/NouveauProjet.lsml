@@ -215,6 +215,38 @@
                 </ContentItem.PropertySources>
               </ContentItem>
               <ContentItem
+                Name="ProjetProperty_Contact"
+                Kind="Value"
+                DataType=":String?">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="NouveauProjet/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="Contact" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="Spacer1"
+                Kind="ScreenContent"
+                View="Microsoft.LightSwitch.RichClient:StaticLabel">
+                <ContentItem.PropertySources>
+                  <ControlPropertySource
+                    Property="Microsoft.LightSwitch.RichClient:StaticLabel/Properties[Text]">
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <ConstantExpression
+                          Value=""
+                          ResultType=":String" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ControlPropertySource>
+                </ContentItem.PropertySources>
+              </ContentItem>
+              <ContentItem
                 Name="Commentaire"
                 Kind="Value"
                 DataType=":String?">

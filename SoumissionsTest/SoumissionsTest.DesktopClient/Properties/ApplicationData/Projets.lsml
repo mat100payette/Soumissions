@@ -132,20 +132,6 @@
           <Hidden />
         </EntityProperty.Attributes>
       </EntityProperty>
-      <EntityProperty>
-        <EntityProperty.Attributes>
-          <Computed />
-          <Proxy
-            Target="LightSwitchServiceApplication:Projet/Properties[SousTotal]" />
-        </EntityProperty.Attributes>
-      </EntityProperty>
-      <EntityProperty>
-        <EntityProperty.Attributes>
-          <Computed />
-          <Proxy
-            Target="LightSwitchServiceApplication:Projet/Properties[Total]" />
-        </EntityProperty.Attributes>
-      </EntityProperty>
     </EntityType.Properties>
   </EntityType>
 </Application>

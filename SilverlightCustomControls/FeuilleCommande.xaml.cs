@@ -125,12 +125,12 @@ namespace SilverlightCustomControls
             pd.Print(string.Format("Commande {0}", numProjet));
         }
 
-        public void setNumProjet(int num)
+        public void SetNumProjet(int num)
         {
             numProjet = num;
         }
 
-        public void setProjetProduits(List<Tuple<int, string, string, decimal, decimal>> projetProduits)
+        public void SetProjetProduits(List<Tuple<int, string, string, decimal, decimal>> projetProduits)
         {
             this.projetProduits = projetProduits;
             itemListView = new PagedCollectionView(this.projetProduits);

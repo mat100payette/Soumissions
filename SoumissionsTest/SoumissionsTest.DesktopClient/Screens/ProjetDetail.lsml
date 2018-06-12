@@ -20,142 +20,6 @@
           Kind="Group"
           View="Microsoft.LightSwitch.RichClient:ColumnsLayout">
           <ContentItem
-            Name="ProjetProperty_SousTotal"
-            IsHidden="True"
-            Kind="Value"
-            DataType="Microsoft.LightSwitch.Extensions:Money">
-            <ContentItem.DataSource>
-              <ScreenExpressionTree>
-                <ChainExpression>
-                  <MemberExpression
-                    Member="ProjetDetail/Properties[ProjetProperty]" />
-                  <MemberExpression
-                    Member="SousTotal" />
-                </ChainExpression>
-              </ScreenExpressionTree>
-            </ContentItem.DataSource>
-            <ContentItem.PropertySources>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[HorizontalAlignment]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="Left"
-                      ResultType=":String" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[MinHeight]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="0"
-                      ResultType=":Double" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[Width]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="0"
-                      ResultType=":Double" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[WidthSizingMode]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="Auto"
-                      ResultType=":String" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[MinWidth]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="0"
-                      ResultType=":Double" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-            </ContentItem.PropertySources>
-          </ContentItem>
-          <ContentItem
-            Name="ProjetProperty_Total"
-            IsHidden="True"
-            Kind="Value"
-            DataType="Microsoft.LightSwitch.Extensions:Money">
-            <ContentItem.DataSource>
-              <ScreenExpressionTree>
-                <ChainExpression>
-                  <MemberExpression
-                    Member="ProjetDetail/Properties[ProjetProperty]" />
-                  <MemberExpression
-                    Member="Total" />
-                </ChainExpression>
-              </ScreenExpressionTree>
-            </ContentItem.DataSource>
-            <ContentItem.PropertySources>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[HorizontalAlignment]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="Left"
-                      ResultType=":String" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[MinHeight]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="0"
-                      ResultType=":Double" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[Width]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="0"
-                      ResultType=":Double" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[WidthSizingMode]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="Auto"
-                      ResultType=":String" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[MinWidth]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="0"
-                      ResultType=":Double" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-            </ContentItem.PropertySources>
-          </ContentItem>
-          <ContentItem
             Name="Group4"
             Kind="Group">
             <ContentItem
@@ -232,17 +96,31 @@
                 </ContentItem.DataSource>
               </ContentItem>
               <ContentItem
-                Name="Spacer"
-                Kind="ScreenContent"
-                View="Microsoft.LightSwitch.RichClient:StaticLabel">
+                Name="ProjetProperty_Created"
+                Kind="Value"
+                DataType=":DateTimeOffset?">
+                <ContentItem.Attributes>
+                  <DisplayName
+                    Value="Ouvert le" />
+                </ContentItem.Attributes>
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProjetDetail/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="Created" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
                 <ContentItem.PropertySources>
                   <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:StaticLabel/Properties[Text]">
+                    Property="Microsoft.LightSwitch.RichClient:DateTimeViewerBase/Properties[ShowTime]">
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <ConstantExpression
-                          Value=""
-                          ResultType=":String" />
+                          Value="False"
+                          ResultType=":Boolean" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ControlPropertySource>
@@ -459,7 +337,8 @@
               Kind="Group">
               <ContentItem
                 Name="Etapes"
-                Kind="ScreenContent">
+                Kind="ScreenContent"
+                View="Microsoft.LightSwitch.RichClient:ScreenCustomContentControl">
                 <ContentItem.Attributes>
                   <DisplayName
                     Value="Étape en cours" />
@@ -561,19 +440,6 @@
                     </ContentItem.DataSource>
                   </ContentItem>
                   <ContentItem
-                    Name="Tag"
-                    Kind="Value"
-                    DataType=":String?">
-                    <ContentItem.DataSource>
-                      <ScreenExpressionTree>
-                        <ChainExpression>
-                          <MemberExpression
-                            Member="ProjetProduit/Properties[Tag]" />
-                        </ChainExpression>
-                      </ScreenExpressionTree>
-                    </ContentItem.DataSource>
-                  </ContentItem>
-                  <ContentItem
                     Name="Produit"
                     Kind="Details"
                     DataType="Produit">
@@ -622,19 +488,6 @@
                       </ScreenExpressionTree>
                     </ContentItem.DataSource>
                   </ContentItem>
-                  <ContentItem
-                    Name="PrixTotal"
-                    Kind="Value"
-                    DataType="Microsoft.LightSwitch.Extensions:Money">
-                    <ContentItem.DataSource>
-                      <ScreenExpressionTree>
-                        <ChainExpression>
-                          <MemberExpression
-                            Member="ProjetProduit/Properties[PrixTotal]" />
-                        </ChainExpression>
-                      </ScreenExpressionTree>
-                    </ContentItem.DataSource>
-                  </ContentItem>
                   <ContentItem.PropertySources>
                     <ControlPropertySource
                       Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[BrowseOnly]">
@@ -668,6 +521,10 @@
                   <ContentItem
                     Name="ProjetProduitsEditSelected"
                     Kind="Command">
+                    <ContentItem.Attributes>
+                      <DisplayName
+                        Value="Edit" />
+                    </ContentItem.Attributes>
                     <ContentItem.DataSource>
                       <ScreenExpressionTree>
                         <ChainExpression>
@@ -1531,6 +1388,38 @@
           <ChainExpression>
             <CallExpression
               Target="ProjetDetail/Properties[ModelesInseres]/Query" />
+          </ChainExpression>
+        </ScreenExpressionTree>
+      </ScreenCollectionProperty>
+      <ScreenCollectionProperty
+        Name="ProduitsProduction"
+        PageSize="45"
+        PropertyType="CollectionView$ProduitProduction">
+        <ScreenCollectionProperty.Query>
+          <ScreenQueryDefinition
+            Name="ProduitsProductionQuery"
+            ReturnType="ProduitProduction*">
+            <ScreenQueryDefinition.FilterExpression>
+              <QueryFilterExpressionTree />
+            </ScreenQueryDefinition.FilterExpression>
+            <ScreenQueryDefinition.Source>
+              <QuerySourceExpressionTree>
+                <ChainExpression>
+                  <MemberExpression
+                    Member="ProjetDetail/Properties[ProjetProduits]" />
+                  <MemberExpression
+                    Member="SelectedItem" />
+                  <MemberExpression
+                    Member="ProduitsProduction" />
+                </ChainExpression>
+              </QuerySourceExpressionTree>
+            </ScreenQueryDefinition.Source>
+          </ScreenQueryDefinition>
+        </ScreenCollectionProperty.Query>
+        <ScreenExpressionTree>
+          <ChainExpression>
+            <CallExpression
+              Target="ProjetDetail/Properties[ProduitsProduction]/Query" />
           </ChainExpression>
         </ScreenExpressionTree>
       </ScreenCollectionProperty>

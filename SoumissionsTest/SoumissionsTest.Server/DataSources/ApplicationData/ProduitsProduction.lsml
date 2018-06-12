@@ -5,7 +5,7 @@
     <Partial />
   </ServiceApplication.Attributes>
   <EntityType
-    Name="ProjetProduit">
+    Name="ProduitProduction">
     <EntityType.Methods>
       <EntityMethod
         Name="Delete">
@@ -23,81 +23,108 @@
           <NotSearchable />
         </KeyProperty.Attributes>
       </KeyProperty>
-      <NavigationProperty
-        Name="Projet"
-        Association="ProjetProduit_Projet"
-        FromEnd="ProjetProduit"
-        ToEnd="Projet" />
-      <NavigationProperty
-        Name="Produit"
-        Association="ProjetProduit_Produit"
-        FromEnd="ProjetProduit"
-        ToEnd="Produit" />
       <EntityProperty
-        Name="Quantite"
-        PropertyType=":Int32">
+        Name="Tag"
+        PropertyType=":String">
         <EntityProperty.Attributes>
           <Required />
-          <NotSearchable />
-          <Range
-            Minimum="1" />
+          <MaxLength
+            Value="255" />
         </EntityProperty.Attributes>
       </EntityProperty>
       <EntityProperty
-        Name="PrixUnitaire"
-        PropertyType="Microsoft.LightSwitch.Extensions:Money">
+        Name="E_Kickoff"
+        PropertyType=":Boolean">
         <EntityProperty.Attributes>
           <Required />
           <NotSearchable />
-          <DecimalConstraint
-            Precision="18"
-            Scale="2" />
-          <Attribute
-            Class="Microsoft.LightSwitch.Extensions:@MoneyProperties">
-            <Property
-              Name="CurrencySymbol"
-              Value="$" />
-          </Attribute>
-          <Range
-            Minimum="0" />
         </EntityProperty.Attributes>
       </EntityProperty>
       <EntityProperty
-        Name="Description"
+        Name="E_D85"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="E_Diagramme"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="E_Implem"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="E_SeqCtrl"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="E_Refreg"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="E_D100"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="E_Approb"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="E_Accept"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <EntityProperty
+        Name="ReadyProd"
+        PropertyType=":Boolean">
+        <EntityProperty.Attributes>
+          <Required />
+          <NotSearchable />
+        </EntityProperty.Attributes>
+      </EntityProperty>
+      <NavigationProperty
+        Name="ProjetProduit"
+        Association="ProduitProduction_ProjetProduit"
+        FromEnd="ProduitProduction"
+        ToEnd="ProjetProduit" />
+      <EntityProperty
+        Name="Note"
         PropertyType=":String?">
         <EntityProperty.Attributes>
           <MaxLength
             Value="255" />
         </EntityProperty.Attributes>
       </EntityProperty>
-      <EntityProperty
-        Name="PrixTotal"
-        PropertyType="Microsoft.LightSwitch.Extensions:Money">
-        <EntityProperty.Attributes>
-          <Attribute
-            Class="Microsoft.LightSwitch.Extensions:@MoneyProperties">
-            <Property
-              Name="CurrencySymbol"
-              Value="$" />
-          </Attribute>
-          <DecimalConstraint
-            Precision="18"
-            Scale="2" />
-          <Required />
-        </EntityProperty.Attributes>
-      </EntityProperty>
-      <EntityProperty
-        Name="DateLivrable"
-        PropertyType=":Date?">
-        <EntityProperty.Attributes>
-          <NotSearchable />
-        </EntityProperty.Attributes>
-      </EntityProperty>
-      <NavigationProperty
-        Name="ProduitsProduction"
-        Association="ProduitProduction_ProjetProduit"
-        FromEnd="ProjetProduit"
-        ToEnd="ProduitProduction" />
       <EntityProperty
         Name="RowVersion"
         PropertyType=":RowVersion">
@@ -116,18 +143,18 @@
       <Partial />
     </EntityContainer.Attributes>
     <EntitySet
-      Name="ProjetProduits"
+      Name="ProduitsProduction"
       CanDelete="True"
       CanInsert="True"
       CanUpdate="True"
-      EntityType="ProjetProduit" />
+      EntityType="ProduitProduction" />
     <QueryOperation
-      Name="ProjetProduits_Single"
-      ReturnType="ProjetProduit">
+      Name="ProduitsProduction_Single"
+      ReturnType="ProduitProduction">
       <QueryOperation.Attributes>
         <Generated />
         <Description
-          Value="Returns the entity whose identity is specified by the parameter(s)." />
+          Value="Renvoie l'entité dont l'identité est spécifiée par les paramètres." />
       </QueryOperation.Attributes>
       <QueryOperation.FilterExpression>
         <QueryFilterExpressionTree>
@@ -149,7 +176,7 @@
       <QueryOperation.Source>
         <QuerySourceExpressionTree>
           <MemberExpression
-            Member="ProjetProduits" />
+            Member="ProduitsProduction" />
         </QuerySourceExpressionTree>
       </QueryOperation.Source>
       <QueryOperationParameter
@@ -157,17 +184,17 @@
         ParameterType=":Int32?">
         <QueryOperationParameter.Attributes>
           <Description
-            Value="The value of the 'Id' key property of the entity to retrieve." />
+            Value="Valeur de la propriété clé « Id » de l'entité à récupérer." />
         </QueryOperationParameter.Attributes>
       </QueryOperationParameter>
     </QueryOperation>
     <QueryOperation
-      Name="ProjetProduits_SingleOrDefault"
-      ReturnType="ProjetProduit">
+      Name="ProduitsProduction_SingleOrDefault"
+      ReturnType="ProduitProduction">
       <QueryOperation.Attributes>
         <Generated />
         <Description
-          Value="Returns the entity whose identity is specified by the parameter(s) or null if no such entity exists." />
+          Value="Retourne l'entité dont l'identité est spécifiée par le(s) paramètre(s) ou Null si cette entité n'existe pas." />
       </QueryOperation.Attributes>
       <QueryOperation.FilterExpression>
         <QueryFilterExpressionTree>
@@ -189,7 +216,7 @@
       <QueryOperation.Source>
         <QuerySourceExpressionTree>
           <MemberExpression
-            Member="ProjetProduits" />
+            Member="ProduitsProduction" />
         </QuerySourceExpressionTree>
       </QueryOperation.Source>
       <QueryOperationParameter
@@ -197,20 +224,10 @@
         ParameterType=":Int32?">
         <QueryOperationParameter.Attributes>
           <Description
-            Value="The value of the 'Id' key property of the entity to retrieve." />
+            Value="Valeur de la propriété clé « Id » de l'entité à récupérer." />
         </QueryOperationParameter.Attributes>
       </QueryOperationParameter>
     </QueryOperation>
-    <AssociationSet
-      Name="ProduitProduction_ProjetProduitSet"
-      Association="ProduitProduction_ProjetProduit">
-      <AssociationSetEnd
-        Name="ProduitProduction"
-        EntitySet="ProduitsProduction" />
-      <AssociationSetEnd
-        Name="ProjetProduit"
-        EntitySet="ProjetProduits" />
-    </AssociationSet>
   </EntityContainer>
   <DataService
     Name="ApplicationDataMapping">
@@ -218,54 +235,21 @@
       <Partial />
     </DataService.Attributes>
     <EntitySetMapping
-      EntitySet="ProjetProduits">
+      EntitySet="ProduitsProduction">
       <EntitySetMapping.Attributes>
         <SsdlForeignKeyProperty
-          Name="ProjetProduit_Projet"
+          Name="ProduitProduction_Projet"
           Nullable="False"
           Type="int" />
         <SsdlForeignKeyProperty
-          Name="ProjetProduit_Produit"
+          Name="ProduitProduction_Produit"
+          Nullable="False"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="ProduitProduction_ProjetProduit"
           Nullable="False"
           Type="int" />
       </EntitySetMapping.Attributes>
     </EntitySetMapping>
-    <AssociationSetMapping
-      AssociationSet="ProduitProduction_ProjetProduitSet">
-      <AssociationSetMapping.Attributes>
-        <SsdlAssociationSet
-          Name="ProduitProduction_ProjetProduitSet" />
-        <SsdlAssociationSetEnd
-          End="ApplicationData/Members[ProduitProduction_ProjetProduitSet]/Members[ProduitProduction]">
-          <SsdlAssociationSetEnd.Attributes>
-            <SsdlPropertyRef
-              Name="ProduitProduction_ProjetProduit" />
-          </SsdlAssociationSetEnd.Attributes>
-        </SsdlAssociationSetEnd>
-        <SsdlAssociationSetEnd
-          End="ApplicationData/Members[ProduitProduction_ProjetProduitSet]/Members[ProjetProduit]">
-          <SsdlAssociationSetEnd.Attributes>
-            <SsdlPropertyRef
-              Name="Id" />
-          </SsdlAssociationSetEnd.Attributes>
-        </SsdlAssociationSetEnd>
-      </AssociationSetMapping.Attributes>
-    </AssociationSetMapping>
   </DataService>
-  <Association
-    Name="ProduitProduction_ProjetProduit">
-    <AssociationEnd
-      Name="ProduitProduction"
-      Multiplicity="Many"
-      EntityType="ProduitProduction" />
-    <AssociationEnd
-      Name="ProjetProduit"
-      Multiplicity="One"
-      EntityType="ProjetProduit">
-      <AssociationEnd.Attributes>
-        <DeleteRule
-          Action="Cascade" />
-      </AssociationEnd.Attributes>
-    </AssociationEnd>
-  </Association>
 </ServiceApplication>

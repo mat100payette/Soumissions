@@ -39,7 +39,7 @@ namespace SilverlightCustomControls
             {
                 string etape = comboBoxEtapes.SelectedValue.ToString().ToUpper();
 
-                setEtape(etape);
+                SetEtape(etape);
             }
         }
 
@@ -54,7 +54,7 @@ namespace SilverlightCustomControls
             return comboBoxEtapes;
         }
 
-        public void setEtape(string etape)
+        public void SetEtape(string etape)
         {
             if (etape.Equals("PRODUCTION"))
             {

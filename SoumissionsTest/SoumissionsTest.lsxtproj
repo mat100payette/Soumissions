@@ -22,7 +22,7 @@
     <ApplicationServerType>IIS</ApplicationServerType>
     <AuthenticationType>None</AuthenticationType>
     <ApplicationName>Soumissions</ApplicationName>
-    <AssemblyVersion>1.1.127.0</AssemblyVersion>
+    <AssemblyVersion>1.1.130.0</AssemblyVersion>
     <ServiceDefinitionFile>ServiceDefinition.csdef</ServiceDefinitionFile>
     <ServiceConfigurationFile>ServiceConfiguration.cscfg</ServiceConfigurationFile>
     <SqlExpressInstanceName>(LocalDB)\MSSQLLocalDB</SqlExpressInstanceName>
@@ -130,6 +130,13 @@
     </_BuildFile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DBProject\DBProject.sqlproj">
+      <Name>DBProject</Name>
+      <Project>{63b88397-a4ac-4fef-9a7f-65837af60dee}</Project>
+      <Private>True</Private>
+      <Type>Database</Type>
+      <BuildReference>False</BuildReference>
+    </ProjectReference>
     <ProjectReference Include="SoumissionsTest.DesktopClient\SoumissionsTest.DesktopClient.csproj">
       <Name>SoumissionsTest.DesktopClient</Name>
       <Project>{ef23cf19-5424-4c58-8130-f25074486fed}</Project>

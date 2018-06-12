@@ -1,77 +1,72 @@
-﻿namespace LightSwitchApplication
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LightSwitchApplication
 {
     public partial class ProjetProduit
     {
-        partial void PrixTotal_Compute(ref decimal result)
+        public Tuple<string, int, decimal> GetProjetProduitInfo()
         {
-            result = PrixUnitaire * Quantite;
+            return new Tuple<string, int, decimal>(
+                    this.Description, this.Quantite, this.PrixUnitaire
+                );
+        }
+
+        public void SetProjetProduitInfo(Tuple<string, int, decimal> info)
+        {
+            this.Description = info.Item1;
+            this.Quantite = info.Item2;
+            this.PrixUnitaire = info.Item3;
         }
 
         partial void ProjetProduit_Created()
         {
             Quantite = 1;
-            Tag = string.Empty;
-            E_Accept = false;
-            E_Approb = false;
-            E_D100 = false;
-            E_D85 = false;
-            E_Diagramme = false;
-            E_Implem = false;
-            E_Kickoff = false;
-            E_Refreg = false;
-            E_SeqCtrl = false;
-            ReadyProd = false;
-            Note = string.Empty;
+            PrixUnitaire = 0;
+            PrixTotal = 0;
         }
 
-        private void UpdateReadyProd()
+        partial void Quantite_Changed()
         {
-            ReadyProd = (E_Accept && E_Approb && E_D100 && E_D85 && E_Diagramme && E_Implem && E_Kickoff && E_Refreg && E_SeqCtrl);
+            UpdateTotal();
         }
 
-        partial void E_Accept_Changed()
+        partial void PrixUnitaire_Changed()
         {
-            UpdateReadyProd();
+            UpdateTotal();
         }
 
-        partial void E_Approb_Changed()
+        private void UpdateTotal()
         {
-            UpdateReadyProd();
+            PrixTotal = Quantite * PrixUnitaire;
         }
 
-        partial void E_D100_Changed()
+        partial void PrixTotal_Changed()
         {
-            UpdateReadyProd();
+            Projet.UpdateTotal();
         }
 
-        partial void E_Refreg_Changed()
+        public void DeleteTags()
         {
-            UpdateReadyProd();
+            List<int> ids = ProduitsProduction.Select(pp => pp.Id).ToList();
+            foreach (int id in ids)
+            {
+                var tag = ProduitsProduction.Single(pp => pp.Id == id);
+                ProduitsProduction.Remove(tag);
+                tag.Delete();
+            }
         }
 
-        partial void E_SeqCtrl_Changed()
+        public void CreateTags(int qty)
         {
-            UpdateReadyProd();
-        }
-
-        partial void E_Implem_Changed()
-        {
-            UpdateReadyProd();
-        }
-
-        partial void E_Diagramme_Changed()
-        {
-            UpdateReadyProd();
-        }
-
-        partial void E_D85_Changed()
-        {
-            UpdateReadyProd();
-        }
-
-        partial void E_Kickoff_Changed()
-        {
-            UpdateReadyProd();
+            DeleteTags();
+            for (int i = 0; i < qty; i++)
+            {
+                ProduitProduction tag = ProduitsProduction.AddNew();
+                tag.ProjetProduit = this;
+                tag.Tag = "BQ" + i;
+            }
         }
     }
 }

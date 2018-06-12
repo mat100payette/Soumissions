@@ -41,7 +41,7 @@ namespace LightSwitchApplication.UserCode
             { query = query.Where(p => filter.Contacts.ToUpper().Contains(p.Contact.ToUpper())); }
             
             if (filter.Produit.NotEmpty())
-            { query = query.Where(p => p.ProjetProduits.Any(n => n.Produit.CachedNom.Contains(filter.Produit))); }
+            { query = query.Where(p => p.ProjetProduits.Any(n => n.Produit.Nom.Contains(filter.Produit))); }
         }
     }
 

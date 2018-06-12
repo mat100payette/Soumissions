@@ -19,28 +19,32 @@
           Name="ScreenLayout"
           Kind="Group">
           <ContentItem
-            Name="gridProduits"
+            Name="SuiviProduits"
             Kind="Collection"
-            DataType="CollectionView$ProjetProduit">
+            DataType="CollectionView$ProduitProduction">
+            <ContentItem.Attributes>
+              <DisplayName
+                Value="Suivi Produits" />
+            </ContentItem.Attributes>
             <ContentItem.DataSource>
               <ScreenExpressionTree>
                 <ChainExpression>
                   <MemberExpression
-                    Member="SuiviProduits/Properties[ProjetProduitsQuery]" />
+                    Member="SuiviProduits/Properties[ProduitsProductionQuery]" />
                 </ChainExpression>
               </ScreenExpressionTree>
             </ContentItem.DataSource>
             <ContentItem
-              Name="RowTemplate"
+              Name="ProduitsProductionQueryTemplate"
               Kind="Details"
-              DataType="ProjetProduit">
+              DataType="ProduitProduction">
               <ContentItem.DataSource>
                 <ScreenExpressionTree>
                   <ChainExpression />
                 </ScreenExpressionTree>
               </ContentItem.DataSource>
               <ContentItem
-                Name="Projet"
+                Name="ProjetProduit_Projet"
                 Kind="Details"
                 DataType="Projet"
                 View="Microsoft.LightSwitch.RichClient:Summary">
@@ -48,7 +52,9 @@
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[Projet]" />
+                        Member="ProduitProduction/Properties[ProjetProduit]" />
+                      <MemberExpression
+                        Member="Projet" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -66,19 +72,50 @@
                 </ContentItem.PropertySources>
               </ContentItem>
               <ContentItem
-                Name="ReadyProd"
+                Name="ProjetProduit_Produit_Nom"
                 Kind="Value"
-                DataType=":Boolean"
-                View="Microsoft.LightSwitch.RichClient:ValueCustomContentControl">
+                DataType=":String?"
+                View="Microsoft.LightSwitch.RichClient:Label">
                 <ContentItem.Attributes>
                   <DisplayName
-                    Value="Prod" />
+                    Value="Produit" />
                 </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[ReadyProd]" />
+                        Member="ProduitProduction/Properties[ProjetProduit]" />
+                      <MemberExpression
+                        Member="Produit" />
+                      <MemberExpression
+                        Member="Nom" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="Tag"
+                Kind="Value"
+                DataType=":String">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProduitProduction/Properties[Tag]" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="ReadyProd"
+                Kind="Value"
+                DataType=":Boolean"
+                View="Microsoft.LightSwitch.RichClient:ValueCustomContentControl">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProduitProduction/Properties[ReadyProd]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -93,241 +130,56 @@
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ControlPropertySource>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[WidthSizingMode]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="Pixels"
-                          ResultType=":String" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[Width]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="20"
-                          ResultType=":Double" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
                 </ContentItem.PropertySources>
-              </ContentItem>
-              <ContentItem
-                Name="Quantite"
-                Kind="Value"
-                DataType=":Int32"
-                View="Microsoft.LightSwitch.RichClient:Label">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Qte" />
-                </ContentItem.Attributes>
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="ProjetProduit/Properties[Quantite]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-                <ContentItem.PropertySources>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[Width]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="20"
-                          ResultType=":Double" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                </ContentItem.PropertySources>
-              </ContentItem>
-              <ContentItem
-                Name="Tag"
-                Kind="Value"
-                DataType=":String?"
-                View="Microsoft.LightSwitch.RichClient:Label">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="ProjetProduit/Properties[Tag]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-              </ContentItem>
-              <ContentItem
-                Name="Produit"
-                Kind="Details"
-                DataType="Produit"
-                View="Microsoft.LightSwitch.RichClient:Summary">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="ProjetProduit/Properties[Produit]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-                <ContentItem.PropertySources>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[WidthSizingMode]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="Pixels"
-                          ResultType=":String" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                </ContentItem.PropertySources>
-              </ContentItem>
-              <ContentItem
-                Name="DateLivrable"
-                Kind="Value"
-                DataType=":Date?">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="ProjetProduit/Properties[DateLivrable]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
               </ContentItem>
               <ContentItem
                 Name="E_Kickoff"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="KickOff" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_Kickoff]" />
+                        Member="ProduitProduction/Properties[E_Kickoff]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
-                <ContentItem.PropertySources>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[WidthSizingMode]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="Pixels"
-                          ResultType=":String" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[Width]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="100"
-                          ResultType=":Double" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                </ContentItem.PropertySources>
               </ContentItem>
               <ContentItem
                 Name="E_D85"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="D85" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_D85]" />
+                        Member="ProduitProduction/Properties[E_D85]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
-                <ContentItem.PropertySources>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[WidthSizingMode]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="Pixels"
-                          ResultType=":String" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[Width]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="100"
-                          ResultType=":Double" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                </ContentItem.PropertySources>
               </ContentItem>
               <ContentItem
                 Name="E_Diagramme"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Diagramme" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_Diagramme]" />
+                        Member="ProduitProduction/Properties[E_Diagramme]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
-                <ContentItem.PropertySources>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[WidthSizingMode]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="Pixels"
-                          ResultType=":String" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[Width]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="100"
-                          ResultType=":Double" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                </ContentItem.PropertySources>
               </ContentItem>
               <ContentItem
                 Name="E_Implem"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Implementation" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_Implem]" />
+                        Member="ProduitProduction/Properties[E_Implem]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -336,15 +188,11 @@
                 Name="E_SeqCtrl"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Sequence Ctrl" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_SeqCtrl]" />
+                        Member="ProduitProduction/Properties[E_SeqCtrl]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -353,15 +201,11 @@
                 Name="E_Refreg"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Refrigeration" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_Refreg]" />
+                        Member="ProduitProduction/Properties[E_Refreg]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -370,15 +214,11 @@
                 Name="E_D100"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="D100" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_D100]" />
+                        Member="ProduitProduction/Properties[E_D100]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -387,15 +227,11 @@
                 Name="E_Approb"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Approbation 2D" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_Approb]" />
+                        Member="ProduitProduction/Properties[E_Approb]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -404,15 +240,11 @@
                 Name="E_Accept"
                 Kind="Value"
                 DataType=":Boolean">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Acceptation" />
-                </ContentItem.Attributes>
                 <ContentItem.DataSource>
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[E_Accept]" />
+                        Member="ProduitProduction/Properties[E_Accept]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -425,30 +257,36 @@
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression
-                        Member="ProjetProduit/Properties[Note]" />
+                        Member="ProduitProduction/Properties[Note]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
               </ContentItem>
             </ContentItem>
+            <ContentItem.CommandItems>
+              <ContentItem
+                Name="ProduitsProductionQuery_DeleteSelected"
+                Kind="Command">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="SuiviProduits/Properties[ProduitsProductionQuery]" />
+                      <CallExpression
+                        Target="DeleteSelected" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+            </ContentItem.CommandItems>
             <ContentItem.PropertySources>
               <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[VerticalAlignment]">
+                Property="Microsoft.LightSwitch.RichClient:DataGrid/Properties[ShowVirtualRow]">
                 <ScreenExpressionTree>
                   <ChainExpression>
                     <ConstantExpression
-                      Value="Stretch"
-                      ResultType=":String" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:RootControl/Properties[AttachedLabelPosition]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="Collapsed"
-                      ResultType=":String" />
+                      Value="False"
+                      ResultType=":Boolean" />
                   </ChainExpression>
                 </ScreenExpressionTree>
               </ControlPropertySource>
@@ -458,16 +296,6 @@
                   <ChainExpression>
                     <ConstantExpression
                       Value="True"
-                      ResultType=":Boolean" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource
-                Property="Microsoft.LightSwitch.RichClient:DataGrid/Properties[ShowVirtualRow]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression
-                      Value="False"
                       ResultType=":Boolean" />
                   </ChainExpression>
                 </ScreenExpressionTree>
@@ -549,28 +377,92 @@
     </Screen.Methods>
     <Screen.Properties>
       <ScreenCollectionProperty
-        Name="ProjetProduitsQuery"
+        Name="ProduitsProductionQuery"
         PageSize="45"
-        PropertyType="CollectionView$ProjetProduit">
+        PropertyType="CollectionView$ProduitProduction">
         <ScreenCollectionProperty.Query>
           <ScreenQueryDefinition
-            Name="ProjetProduitsQueryQuery"
-            ReturnType="ProjetProduit*">
+            Name="ProduitsProductionQueryQuery"
+            ReturnType="ProduitProduction*">
             <ScreenQueryDefinition.FilterExpression>
-              <QueryFilterExpressionTree />
+              <QueryFilterExpressionTree>
+                <BinaryExpression
+                  NodeType="Equal">
+                  <BinaryExpression.Left>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProduitProduction/Properties[ProjetProduit]" />
+                      <MemberExpression
+                        Member="Projet" />
+                      <MemberExpression
+                        Member="EtapeEnCours" />
+                      <MemberExpression
+                        Member="Nom" />
+                    </ChainExpression>
+                  </BinaryExpression.Left>
+                  <BinaryExpression.Right>
+                    <ConstantExpression
+                      Value="ATTENTE D'APPROBATION"
+                      ResultType=":String" />
+                  </BinaryExpression.Right>
+                </BinaryExpression>
+              </QueryFilterExpressionTree>
             </ScreenQueryDefinition.FilterExpression>
             <ScreenQueryDefinition.Source>
               <QuerySourceExpressionTree>
                 <MemberExpression
-                  Member="ApplicationData/Members[ProjetProduitsQuery]" />
+                  Member="ApplicationData/Members[ProduitsProductionQuery]" />
               </QuerySourceExpressionTree>
             </ScreenQueryDefinition.Source>
+            <ScreenQueryDefinition.Includes>
+              <IncludeCriterion
+                Mode="Included">
+                <ChainExpression>
+                  <MemberExpression
+                    Member="ProjetProduit" />
+                  <MemberExpression
+                    Member="Produit" />
+                </ChainExpression>
+              </IncludeCriterion>
+              <IncludeCriterion
+                Mode="Included">
+                <ChainExpression>
+                  <MemberExpression
+                    Member="ProjetProduit" />
+                  <MemberExpression
+                    Member="Projet" />
+                </ChainExpression>
+              </IncludeCriterion>
+            </ScreenQueryDefinition.Includes>
+            <ScreenQueryDefinition.SortCriteria>
+              <SortCriterion
+                Direction="Descending">
+                <ChainExpression>
+                  <MemberExpression
+                    Member="ProjetProduit" />
+                  <MemberExpression
+                    Member="Projet" />
+                  <MemberExpression
+                    Member="NumProjet" />
+                </ChainExpression>
+              </SortCriterion>
+              <SortCriterion>
+                <ChainExpression>
+                  <MemberExpression
+                    Member="ProjetProduit" />
+                  <MemberExpression
+                    Member="Produit" />
+                  <MemberExpression
+                    Member="Nom" />
+                </ChainExpression>
+              </SortCriterion>
+            </ScreenQueryDefinition.SortCriteria>
           </ScreenQueryDefinition>
         </ScreenCollectionProperty.Query>
         <ScreenExpressionTree>
           <ChainExpression>
             <CallExpression
-              Target="SuiviProduits/Properties[ProjetProduitsQuery]/Query" />
+              Target="SuiviProduits/Properties[ProduitsProductionQuery]/Query" />
           </ChainExpression>
         </ScreenExpressionTree>
       </ScreenCollectionProperty>

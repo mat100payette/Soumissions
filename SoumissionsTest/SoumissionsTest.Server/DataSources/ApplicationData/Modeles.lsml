@@ -27,7 +27,9 @@
         Name="NomComplet"
         PropertyType=":String">
         <EntityProperty.Attributes>
-          <Computed />
+          <Required />
+          <MaxLength
+            Value="255" />
         </EntityProperty.Attributes>
       </EntityProperty>
       <EntityProperty

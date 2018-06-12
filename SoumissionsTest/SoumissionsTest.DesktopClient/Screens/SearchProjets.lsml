@@ -222,6 +222,19 @@
                 </ContentItem.DataSource>
               </ContentItem>
               <ContentItem
+                Name="Total"
+                Kind="Value"
+                DataType="Microsoft.LightSwitch.Extensions:Money">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="Projet/Properties[Total]" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
                 Name="Commentaire"
                 Kind="Value"
                 DataType=":String?">
@@ -230,23 +243,6 @@
                     <ChainExpression>
                       <MemberExpression
                         Member="Projet/Properties[Commentaire]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-              </ContentItem>
-              <ContentItem
-                Name="CachedTotal"
-                Kind="Value"
-                DataType="Microsoft.LightSwitch.Extensions:Money?">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Total" />
-                </ContentItem.Attributes>
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="Projet/Properties[CachedTotal]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>

@@ -164,6 +164,7 @@
       <SpecificVersion>False</SpecificVersion>
       <ProjectCritical>True</ProjectCritical>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition.Initialization, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <ProjectCritical>True</ProjectCritical>
     </Reference>
@@ -266,6 +267,9 @@
     <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Produit.lsml.cs">
       <Link>UserCode\Shared\Produit.lsml.cs</Link>
     </Compile>
+    <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\ProduitProduction.lsml.cs">
+      <Link>UserCode\Shared\ProduitProduction.lsml.cs</Link>
+    </Compile>
     <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\Projet.lsml.cs">
       <Link>UserCode\Shared\Projet.lsml.cs</Link>
     </Compile>
@@ -283,6 +287,9 @@
     </Compile>
     <Compile Include="..\SoumissionsTest.Server\DataSources\ApplicationData\VendeurRapport.lsml.cs">
       <Link>UserCode\Shared\VendeurRapport.lsml.cs</Link>
+    </Compile>
+    <Compile Include="..\SoumissionsTest.Server\UserCode\EntityExtensions.cs">
+      <Link>UserCode\Shared\EntityExtensions.cs</Link>
     </Compile>
     <Compile Include="..\SoumissionsTest.Server\UserCode\Shared\EtapeList.cs">
       <Link>UserCode\Shared\EtapeList.cs</Link>
@@ -344,7 +351,6 @@
       <ProjectCritical>true</ProjectCritical>
     </LightSwitchModel>
     <LightSwitchModel Include="Properties\ApplicationData\Vendeurs.lsml" />
-    <LightSwitchModel Include="Properties\ApplicationData\Modeles.lsml" />
     <LightSwitchModel Include="Properties\ApplicationData\Projets.lsml" />
     <LightSwitchModel Include="Properties\ApplicationData\ProjetProduits.lsml" />
     <LightSwitchModel Include="Properties\ApplicationData\Produits.lsml" />

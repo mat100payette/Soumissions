@@ -11,7 +11,7 @@ namespace LightSwitchApplication.UserCode
 
             public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
             {
-                var textResult = "";
+                string textResult = string.Empty;
                 if ((int)value == 0)
                 {
                     textResult = "0$";

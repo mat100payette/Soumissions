@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Specialized;
+using System;
 using System.Windows.Controls;
 using Microsoft.LightSwitch.Presentation.Extensions;
 using Microsoft.LightSwitch;
@@ -17,8 +18,8 @@ namespace LightSwitchApplication
     {
         private ModalWindow windowProduit;
         private ModalWindow windowCommande;
-        private Produit selectedProduit;
-        private ProjetProduit selectedProjetProduit;
+        private Tuple<string, string, string, string, List<string>, List<string>> selectedProduitInfo;
+        private Tuple<string, int, decimal> selectedProjetProduitInfo;
 
         partial void ProjetDetail_InitializeDataWorkspace(List<IDataService> saveChangesTo)
         {
@@ -33,8 +34,6 @@ namespace LightSwitchApplication
                 ChildWindow window = (ChildWindow)e.Control;
                 window.Closed += new EventHandler(Window_Closed);
             });
-
-            Items.SelectedItem = null;
         }
 
         partial void ProjetDetail_Created()
@@ -45,7 +44,6 @@ namespace LightSwitchApplication
             var controlEtapes = this.FindControl("Etapes");
             controlEtapes.ControlAvailable -= InitControlEtapes;
             controlEtapes.ControlAvailable += InitControlEtapes;
-
         }
 
         private void InitControlEtapes(object o, ControlAvailableEventArgs e)
@@ -129,107 +127,63 @@ namespace LightSwitchApplication
             {
                 ProduitEditor controlProduits = e.Control as ProduitEditor;
 
-                validated = controlProduits.validate();
+                validated = controlProduits.Validate();
             });
 
             if (validated)
             {
+                DataWorkspace workspace = DataWorkspace;
 
-                List<string> optionsBC = null;
-                List<string> modeles = null;
-
-                List<ProduitOptionBC> produitOptionsBC = (from po in ProduitOptionsBC
-                                                                where po.Produit.Equals(ProjetProduits.SelectedItem.Produit)
-                                                                select po).ToList();
-
-                List<ModeleInsere> modelesInseres = (from mi in ModelesInseres
-                                                           where mi.Produit.Equals(ProjetProduits.SelectedItem.Produit)
-                                                           select mi).ToList();
-
-                List<OptionBC> produitOptionsBC_options = new List<OptionBC>();
-                foreach (ProduitOptionBC prodOptionBC in produitOptionsBC)
-                {
-                    produitOptionsBC_options.Add(prodOptionBC.OptionBC);
-                }
-
-                List<Modele> modeleInsere_modele = new List<Modele>();
-                foreach (ModeleInsere modInsere in modelesInseres)
-                {
-                    modeleInsere_modele.Add(modInsere.Modele);
-                }
+                ProjetProduit selectedPP = ProjetProduits.SelectedItem ?? ProjetProduits.AddNew();
+                Produit newProduit = null;
 
                 this.FindControl("Modeles").ControlAvailable += ((o, e) =>
                 {
                     ProduitEditor controlProduits = e.Control as ProduitEditor;
+                    var produitInfo = controlProduits.GetProduit();
 
-                    optionsBC = controlProduits.getOptionsBC();
-                    modeles = controlProduits.getInsertionsBC();
-                    controlProduits.updateAll();
-                    controlProduits.resetColors();
+                    Details.Dispatcher.BeginInvoke(() => {
+                        newProduit = Produit.CreateProduit(produitInfo, workspace);
+                        Produit existingProduit = newProduit.ExistsOther(workspace);
+
+                        Dispatchers.Main.BeginInvoke(() => {
+                            selectedPP.SetProjetProduitInfo(controlProduits.GetProjetProduit());
+                            controlProduits.ResetColors();
+                            
+                            if (existingProduit != null)
+                            {
+                                selectedPP.Produit = existingProduit;
+                                newProduit.Details.DiscardChanges();
+                            }
+                            else
+                            {
+                                selectedPP.Produit = newProduit;
+                            }
+                            
+                            Details.Dispatcher.BeginInvoke(() =>
+                            {
+                                if (!DataWorkspace.ApplicationData.Details.GetChanges().Any(c => c.Details.ValidationResults.HasErrors))
+                                {
+                                    DataWorkspace.ApplicationData.SaveChanges();
+
+                                    workspace.ApplicationData.UpdateModeles().FirstOrDefault();
+
+                                    if (selectedPP.Produit.Modele != null)
+                                        selectedPP.CreateTags(selectedPP.Quantite);
+                                    else
+                                        selectedPP.DeleteTags();
+
+                                    DataWorkspace.ApplicationData.SaveChanges();
+                                }
+
+                                Dispatchers.Main.BeginInvoke(() => {
+                                    windowProduit.DialogOk();
+                                });
+                            });
+                        });
+                    });
                 });
-
-                if (optionsBC.Count != 0)
-                {
-                    List<ProduitOptionBC> oldProduitOptions = ProduitOptionsBC.Where(o => o.Produit.Equals(ProjetProduits.SelectedItem.Produit)).ToList();
-
-                    foreach (ProduitOptionBC prodOption in oldProduitOptions)
-                    {
-                        prodOption.Delete();
-                    }
-
-                    foreach (string option in optionsBC)
-                    {
-                        OptionBC convertedOptionBC = OptionsBC.Where(op => op.Nom.Equals(option)).SingleOrDefault();
-                        if (convertedOptionBC != null)
-                        {
-                            ProduitOptionBC newProduitOptionBC = DataWorkspace.ApplicationData.ProduitOptionsBC.AddNew();
-                            newProduitOptionBC.Produit = ProjetProduits.SelectedItem.Produit;
-                            newProduitOptionBC.OptionBC = convertedOptionBC;
-
-                            ProjetProduits.SelectedItem.Produit.ProduitOptionsBC.Add(newProduitOptionBC);
-                        }
-                    }
-                }
-
-                if (modeles.Count != 0)
-                {
-                    List<ModeleInsere> oldModeleInseres = ModelesInseres.Where(mo => mo.Produit.Equals(ProjetProduits.SelectedItem.Produit)).ToList();
-
-                    foreach (ModeleInsere modInsere in oldModeleInseres)
-                    {
-                        modInsere.Delete();
-                    }
-
-                    foreach (string modele in modeles)
-                    {
-                        Modele convertedModele = Modeles.Where(mo => mo.NomComplet.Equals(modele)).SingleOrDefault();
-                        if (convertedModele != null)
-                        {
-                            ModeleInsere newInsertionBC = DataWorkspace.ApplicationData.ModelesInseres.AddNew();
-                            newInsertionBC.Produit = ProjetProduits.SelectedItem.Produit;
-                            newInsertionBC.Modele = convertedModele;
-
-                            ProjetProduits.SelectedItem.Produit.ModelesInseres.Add(newInsertionBC);
-                        }
-                    }
-                }
-
-                ProjetProduits.SelectedItem.Produit.UpdateNom();
-
-                Details.Dispatcher.BeginInvoke(() =>
-                {
-                    DataWorkspace.ApplicationData.SaveChanges();
-                    ProjetProduits.SelectedItem.Produit.UpdateNom();
-                    DataWorkspace.ApplicationData.SaveChanges();
-                });
-
-                windowProduit.DialogOk();
             }
-        }
-
-        partial void ProjetProduitsAddAndEditNew_CanExecute(ref bool result)
-        {
-            result = true;
         }
 
         partial void ProjetProduitsAddAndEditNew_Execute()
@@ -237,23 +191,8 @@ namespace LightSwitchApplication
             this.FindControl("Ajouter").ControlAvailable += ((o, e) =>
             {
                 Button bouton = e.Control as Button;
-
                 bouton.Content = "Ajouter";
             });
-
-            selectedProjetProduit = DataWorkspace.ApplicationData.ProjetProduits.AddNew();
-            selectedProduit = DataWorkspace.ApplicationData.Produits.AddNew();
-
-            selectedProduit.ProjetProduits.Add(selectedProjetProduit);
-            
-            selectedProjetProduit.Projet = ProjetProperty;
-            selectedProjetProduit.Produit = selectedProduit;
-
-            Produits.SelectedItem = selectedProduit;
-            ProjetProduits.SelectedItem = selectedProjetProduit;
-            Items.SelectedItem = null;
-            
-            initProduitWindow();
 
             windowProduit.setEntityName("Nouveau Produit");
             windowProduit.AddEntity();
@@ -261,26 +200,26 @@ namespace LightSwitchApplication
 
         partial void ProjetProduitsEditSelected_Execute()
         {
+            LoadProduitInfo();
+
             this.FindControl("Ajouter").ControlAvailable += ((o, e) =>
             {
                 Button bouton = e.Control as Button;
-
                 bouton.Content = "Modifier";
             });
-            
-            selectedProjetProduit = ProjetProduits.SelectedItem;
-            selectedProduit = selectedProjetProduit.Produit;
-            Produits.SelectedItem = selectedProduit;
-
-            if (Produits.SelectedItem.Item != null)
-            {
-                Items.SelectedItem = Produits.SelectedItem.Item;
-            }
-            
-            initProduitWindow();
 
             windowProduit.setEntityName("Modifier Produit");
             windowProduit.ViewEntity();
+        }
+
+        private void LoadProduitInfo()
+        {
+            this.FindControl("Modeles").ControlAvailable += ((o, e) =>
+            {
+                ProduitEditor controlProduits = e.Control as ProduitEditor;
+                controlProduits.SetProduit(selectedProduitInfo);
+                controlProduits.SetProjetProduit(selectedProjetProduitInfo);
+            });
         }
 
         void Window_Closed(object sender, EventArgs e)
@@ -289,80 +228,25 @@ namespace LightSwitchApplication
             
             if (!(window.DialogResult.HasValue))
             {
-                foreach (Produit produit in DataWorkspace.ApplicationData.Details.GetChanges().AddedEntities.OfType<Produit>())
-                {
+                EntityChangeSet changes = DataWorkspace.ApplicationData.Details.GetChanges();
+                var added = changes.AddedEntities;
+
+                foreach (Produit produit in added.OfType<Produit>())
                     produit.Details.DiscardChanges();
-                }
-                foreach (ProjetProduit projetProduit in DataWorkspace.ApplicationData.Details.GetChanges().AddedEntities.OfType<ProjetProduit>())
-                {
+
+                foreach (ProjetProduit projetProduit in added.OfType<ProjetProduit>())
                     projetProduit.Details.DiscardChanges();
-                }
-                foreach (ProduitOptionBC produitOptionBC in DataWorkspace.ApplicationData.Details.GetChanges().AddedEntities.OfType<ProduitOptionBC>())
-                {
+
+                foreach (ProduitOptionBC produitOptionBC in added.OfType<ProduitOptionBC>())
                     produitOptionBC.Details.DiscardChanges();
-                }
-                foreach (ModeleInsere modeleInsere in DataWorkspace.ApplicationData.Details.GetChanges().AddedEntities.OfType<ModeleInsere>())
-                {
+
+                foreach (ModeleInsere modeleInsere in added.OfType<ModeleInsere>())
                     modeleInsere.Details.DiscardChanges();
-                }
+
                 if (ProjetProduits.Any())
                 {
                     ProjetProduits.SelectedItem = ProjetProduits.Last();
-                    Produits.SelectedItem = ProjetProduits.SelectedItem.Produit;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Initializes the Modeles control.
-        /// </summary>
-        private void initProduitWindow()
-        {
-            setSelectedInsertionsBC();
-            setSelectedOptionsBC();
-        }
-
-        /// <summary>
-        /// Sets the selected OptionsBC in the Modeles control.
-        /// </summary>
-        private void setSelectedOptionsBC()
-        {
-            List<string> selectedOptionsBC = new List<string>();
-
-            if (selectedProjetProduit != null)
-            {
-                foreach (ProduitOptionBC pOption in selectedProjetProduit.Produit.ProduitOptionsBC)
-                {
-                    selectedOptionsBC.Add(pOption.OptionBC.Nom);
-                }
-                
-                this.FindControl("Modeles").ControlAvailable += ((o, e) =>
-                {
-                    ProduitEditor controlProduits = e.Control as ProduitEditor;
-                    controlProduits.setOptionsBC(selectedOptionsBC);
-                });
-            }
-        }
-
-        /// <summary>
-        /// Sets the selected InsertionsBC in the Modeles control.
-        /// </summary>
-        private void setSelectedInsertionsBC()
-        {
-            List<string> selectedInsertionsBC = new List<string>();
-
-            if (selectedProjetProduit != null)
-            {
-                foreach (ModeleInsere modeleInsere in selectedProjetProduit.Produit.ModelesInseres)
-                {
-                    selectedInsertionsBC.Add(modeleInsere.Modele.NomComplet);
-                }
-
-                this.FindControl("Modeles").ControlAvailable += ((o, e) =>
-                {
-                    ProduitEditor controlProduits = e.Control as ProduitEditor;
-                    controlProduits.setInsertionsBC(selectedInsertionsBC);
-                });
             }
         }
 
@@ -398,8 +282,15 @@ namespace LightSwitchApplication
         /// <param name="result">Is in Production or Livré</param>
         partial void Commande_CanExecute(ref bool result)
         {
-            string etape = ProjetProperty.EtapeEnCours.ToString();
-            result = (etape == EtapeList.DESSIN || etape == EtapeList.PRODUCTION || etape == EtapeList.LIVRE);
+            if (ProjetProperty == null)
+            {
+                result = false;
+            }
+            else
+            {
+                string etape = ProjetProperty.EtapeEnCours.ToString();
+                result = (etape == EtapeList.DESSIN || etape == EtapeList.PRODUCTION || etape == EtapeList.LIVRE);
+            } 
         }
 
         /// <summary>
@@ -422,15 +313,36 @@ namespace LightSwitchApplication
         {
             this.FindControl("Projet").ControlAvailable += ((o, e) =>
             {
-                FeuilleCommande controlProjet = e.Control as FeuilleCommande;
+                FeuilleCommande commande = e.Control as FeuilleCommande;
 
-                controlProjet.setNumProjet(ProjetProperty.NumProjet);
-                controlProjet.setProjetProduits(ProjetProduits.Select(
-                        pp => 
-                        new Tuple<int, string, string, decimal, decimal>(pp.Quantite, pp.Produit.CachedNom, pp.Description, pp.PrixUnitaire, pp.PrixTotal)
+                commande.SetNumProjet(ProjetProperty.NumProjet);
+                commande.SetProjetProduits(ProjetProduits.Select(
+                        pp => new Tuple<int, string, string, decimal, decimal>(pp.Quantite, pp.Produit.Nom, pp.Description, pp.PrixUnitaire, pp.PrixTotal)
                     ).ToList());
             });
         }
 
+        partial void ProjetDetail_Saving(ref bool handled)
+        {
+            // Écrivez votre code ici.
+            var ch = DataWorkspace.ApplicationData.Details.GetChanges();
+            ;
+        }
+
+        partial void ProjetProduits_SelectionChanged()
+        {
+            if (ProjetProduits.SelectedItem != null)
+            {
+                var selected = ProjetProduits.SelectedItem;
+                Details.Dispatcher.BeginInvoke(() =>
+                {
+                    if (selected.Produit == null)
+                        selectedProduitInfo = null;
+                    else
+                        selectedProduitInfo = selected.Produit.GetMainInfo();
+                    selectedProjetProduitInfo = selected.GetProjetProduitInfo();
+                });
+            }
+        }
     }
 }
