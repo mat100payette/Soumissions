@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using System;
+﻿using System;
 using System.Windows.Controls;
 using Microsoft.LightSwitch.Presentation.Extensions;
 using Microsoft.LightSwitch;
@@ -8,7 +7,6 @@ using LightSwitchApplication.UserCode;
 using SilverlightCustomControls;
 using System.Collections.Generic;
 using LightSwitchApplication.UserCode.Shared;
-using Microsoft.LightSwitch.Presentation;
 using System.Windows;
 using Microsoft.LightSwitch.Threading;
 
@@ -17,14 +15,35 @@ namespace LightSwitchApplication
     public partial class ProjetDetail
     {
         private ModalWindow windowProduit;
+        private ProduitEditor editor;
+        private Button editorBtn;
+        private string editorBtnLabel;
         private ModalWindow windowCommande;
+        private EtapesControl etapesControl;
         private Tuple<string, string, string, string, List<string>, List<string>> selectedProduitInfo;
         private Tuple<string, int, decimal> selectedProjetProduitInfo;
+        private bool isNewProduit = false;
 
         partial void ProjetDetail_InitializeDataWorkspace(List<IDataService> saveChangesTo)
         {
             windowProduit = new ModalWindow(ProjetProduits, "NouveauProduit", "Nouveau Produit");
             windowCommande = new ModalWindow(ProjetProduits, "Commande", "Commande");
+
+            this.FindControl("Modeles").ControlAvailable += ((o, e) =>
+            {
+                editor = (ProduitEditor)e.Control;
+            });
+
+            this.FindControl("Ajouter").ControlAvailable += ((o, e) =>
+            {
+                editorBtn = (Button)e.Control;
+                editorBtn.Content = editorBtnLabel;
+            });
+
+            this.FindControl("Etapes").ControlAvailable += ((o, e) =>
+            {
+                etapesControl = (EtapesControl)e.Control;
+            });
 
             // Wire up an event to detect when the Modal window is closed
             this.FindControl("NouveauProduit").ControlAvailable += ((o, e) =>
@@ -41,16 +60,7 @@ namespace LightSwitchApplication
             windowProduit.Initialise();
             windowCommande.Initialise();
 
-            var controlEtapes = this.FindControl("Etapes");
-            controlEtapes.ControlAvailable -= InitControlEtapes;
-            controlEtapes.ControlAvailable += InitControlEtapes;
-        }
-
-        private void InitControlEtapes(object o, ControlAvailableEventArgs e)
-        {
-            EtapesControl etapes = e.Control as EtapesControl;
-
-            etapes.SetEtapeChanged(EtapeChanged);
+            etapesControl.SetEtapeChanged(EtapeChanged);
         }
 
         private void EtapeChanged(object o, SelectionChangedEventArgs e)
@@ -103,17 +113,6 @@ namespace LightSwitchApplication
             }
         }
 
-        private void LoadEtapes(object o, ControlAvailableEventArgs e)
-        {
-            EtapesControl etapes = e.Control as EtapesControl;
-            ComboBox cbEtapes = etapes.GetComboBox();
-            cbEtapes.DisplayMemberPath = ProjetEtape.DetailsClass.PropertySetProperties.Etape.Name();
-            cbEtapes.ItemsSource = ProjetEtapes.Select(pe => pe).OrderBy(pe => pe.Etape.Ordre).ToList();
-            cbEtapes.SelectedItem = ProjetEtapes.SingleOrDefault(pe => pe.Etape == ProjetProperty.EtapeEnCours);
-            cbEtapes.Tag = cbEtapes.SelectedItem;
-            ProjetEtapes.SelectedItem = cbEtapes.SelectedItem as ProjetEtape;
-        }
-
         partial void ProjetProduitsEditSelected_CanExecute(ref bool result)
         {
             result = (ProjetProduits.SelectedItem != null);
@@ -123,107 +122,106 @@ namespace LightSwitchApplication
         {
             bool validated = false;
 
-            this.FindControl("Modeles").ControlAvailable += ((o, e) =>
+            Dispatchers.Main.BeginInvoke(() =>
             {
-                ProduitEditor controlProduits = e.Control as ProduitEditor;
+                validated = editor.Validate();
 
-                validated = controlProduits.Validate();
-            });
-
-            if (validated)
-            {
-                DataWorkspace workspace = DataWorkspace;
-
-                ProjetProduit selectedPP = ProjetProduits.SelectedItem ?? ProjetProduits.AddNew();
-                Produit newProduit = null;
-
-                this.FindControl("Modeles").ControlAvailable += ((o, e) =>
+                if (validated)
                 {
-                    ProduitEditor controlProduits = e.Control as ProduitEditor;
-                    var produitInfo = controlProduits.GetProduit();
+                    Details.Dispatcher.BeginInvoke(() =>
+                    {
+                        DataWorkspace workspace = DataWorkspace;
 
-                    Details.Dispatcher.BeginInvoke(() => {
-                        newProduit = Produit.CreateProduit(produitInfo, workspace);
-                        Produit existingProduit = newProduit.ExistsOther(workspace);
+                        ProjetProduit selectedPP = isNewProduit ? ProjetProduits.AddNew() : ProjetProduits.SelectedItem;
+                        Produit newProduit = null;
 
-                        Dispatchers.Main.BeginInvoke(() => {
-                            selectedPP.SetProjetProduitInfo(controlProduits.GetProjetProduit());
-                            controlProduits.ResetColors();
-                            
-                            if (existingProduit != null)
-                            {
-                                selectedPP.Produit = existingProduit;
-                                newProduit.Details.DiscardChanges();
-                            }
-                            else
-                            {
-                                selectedPP.Produit = newProduit;
-                            }
-                            
+                        Dispatchers.Main.BeginInvoke(() =>
+                        {
+                            var produitInfo = editor.GetProduit();
+
                             Details.Dispatcher.BeginInvoke(() =>
                             {
-                                if (!DataWorkspace.ApplicationData.Details.GetChanges().Any(c => c.Details.ValidationResults.HasErrors))
+                                newProduit = Produit.CreateProduit(produitInfo, workspace);
+                                Produit existingProduit = newProduit.ExistsOther(workspace);
+
+                                Dispatchers.Main.BeginInvoke(() =>
                                 {
-                                    DataWorkspace.ApplicationData.SaveChanges();
+                                    selectedPP.SetProjetProduitInfo(editor.GetProjetProduit());
+                                    editor.ResetColors();
 
-                                    workspace.ApplicationData.UpdateModeles().FirstOrDefault();
-
-                                    if (selectedPP.Produit.Modele != null)
-                                        selectedPP.CreateTags(selectedPP.Quantite);
+                                    if (existingProduit != null)
+                                    {
+                                        selectedPP.Produit = existingProduit;
+                                        newProduit.Details.DiscardChanges();
+                                    }
                                     else
-                                        selectedPP.DeleteTags();
+                                    {
+                                        selectedPP.Produit = newProduit;
+                                    }
 
-                                    DataWorkspace.ApplicationData.SaveChanges();
-                                }
+                                    Details.Dispatcher.BeginInvoke(() =>
+                                    {
+                                        if (!workspace.ApplicationData.Details.GetChanges().Any(c => c.Details.ValidationResults.HasErrors))
+                                        {
+                                            workspace.ApplicationData.UpdateModeles().FirstOrDefault();
 
-                                Dispatchers.Main.BeginInvoke(() => {
-                                    windowProduit.DialogOk();
+                                            if (selectedPP.Produit.Modele != null)
+                                                selectedPP.CreateTags(selectedPP.Quantite);
+                                            else
+                                                selectedPP.DeleteTags();
+
+                                            workspace.ApplicationData.SaveChanges();
+                                        }
+
+                                        SetSelection();
+
+                                        Dispatchers.Main.BeginInvoke(() =>
+                                        {
+                                            windowProduit.DialogOk();
+                                        });
+                                    });
                                 });
                             });
                         });
                     });
-                });
-            }
+                }
+            });
         }
 
         partial void ProjetProduitsAddAndEditNew_Execute()
         {
-            this.FindControl("Ajouter").ControlAvailable += ((o, e) =>
-            {
-                Button bouton = e.Control as Button;
-                bouton.Content = "Ajouter";
-            });
-
+            isNewProduit = true;
+            editorBtnLabel = "Ajouter";
             windowProduit.setEntityName("Nouveau Produit");
             windowProduit.AddEntity();
         }
 
         partial void ProjetProduitsEditSelected_Execute()
         {
+            isNewProduit = false;
             LoadProduitInfo();
-
-            this.FindControl("Ajouter").ControlAvailable += ((o, e) =>
-            {
-                Button bouton = e.Control as Button;
-                bouton.Content = "Modifier";
-            });
-
+            editorBtnLabel = "Modifier";
             windowProduit.setEntityName("Modifier Produit");
             windowProduit.ViewEntity();
         }
 
         private void LoadProduitInfo()
         {
-            this.FindControl("Modeles").ControlAvailable += ((o, e) =>
+            Dispatchers.Main.BeginInvoke(() =>
             {
-                ProduitEditor controlProduits = e.Control as ProduitEditor;
-                controlProduits.SetProduit(selectedProduitInfo);
-                controlProduits.SetProjetProduit(selectedProjetProduitInfo);
+                // TODO: Fix when editor not loaded yet.
+                editor.SetProduit(selectedProduitInfo);
+                editor.SetProjetProduit(selectedProjetProduitInfo);
             });
         }
 
         void Window_Closed(object sender, EventArgs e)
         {
+            Dispatchers.Main.BeginInvoke(() =>
+            {
+                editor.Clear();
+            });
+
             ChildWindow window = (ChildWindow)sender;
             
             if (!(window.DialogResult.HasValue))
@@ -245,7 +243,7 @@ namespace LightSwitchApplication
 
                 if (ProjetProduits.Any())
                 {
-                    ProjetProduits.SelectedItem = ProjetProduits.Last();
+                    //ProjetProduits.SelectedItem = ProjetProduits.Last();
                 }
             }
         }
@@ -300,9 +298,15 @@ namespace LightSwitchApplication
         partial void ProjetEtapes_Loaded(bool succeeded)
         {
             if (Etapes == null) Etapes.Load();
-            var etapesControl = this.FindControl("Etapes");
-            etapesControl.ControlAvailable -= LoadEtapes;
-            etapesControl.ControlAvailable += LoadEtapes;
+            Dispatchers.Main.BeginInvoke(() =>
+            {
+                ComboBox cbEtapes = etapesControl.GetComboBox();
+                cbEtapes.DisplayMemberPath = ProjetEtape.DetailsClass.PropertySetProperties.Etape.Name();
+                cbEtapes.ItemsSource = ProjetEtapes.Select(pe => pe).OrderBy(pe => pe.Etape.Ordre).ToList();
+                cbEtapes.SelectedItem = ProjetEtapes.SingleOrDefault(pe => pe.Etape == ProjetProperty.EtapeEnCours);
+                cbEtapes.Tag = cbEtapes.SelectedItem;
+                ProjetEtapes.SelectedItem = cbEtapes.SelectedItem as ProjetEtape;
+            });
         }
 
         /// <summary>
@@ -330,6 +334,11 @@ namespace LightSwitchApplication
         }
 
         partial void ProjetProduits_SelectionChanged()
+        {
+            SetSelection();
+        }
+
+        private void SetSelection()
         {
             if (ProjetProduits.SelectedItem != null)
             {

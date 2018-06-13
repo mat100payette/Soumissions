@@ -78,7 +78,6 @@
   <ItemGroup>
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="CustomListData.cs" />
-    <Compile Include="CustomStringData.cs" />
     <Compile Include="MultiBinding\IMultiValueConverter.cs" />
     <Compile Include="MultiBinding\MultiBinding.cs" />
     <Compile Include="MultiBinding\MultiBindingExpression.cs" />

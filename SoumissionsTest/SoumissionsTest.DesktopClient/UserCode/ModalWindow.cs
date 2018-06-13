@@ -77,20 +77,14 @@ namespace LightSwitchApplication.UserCode
 
         public void DialogOk()
         {
-            if (_entity != null)
-            {
-                _screen.CloseModalWindow(_dialogName);
-            }
+            _screen.CloseModalWindow(_dialogName);
         }
 
         public void DialogCancel()
         {
-            if (_entity != null)
-            {
-                _screen.CloseModalWindow(_dialogName);
+            _screen.CloseModalWindow(_dialogName);
 
-                DiscardChanges();
-            }
+            DiscardChanges();
         }
 
         public void DialogClosed(object sender)

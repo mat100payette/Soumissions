@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -16,21 +14,15 @@ namespace SilverlightCustomControls
 {
     public partial class ProduitEditor : UserControl
     {
-        private List<object> EMPTY_LIST = new List<object>();
         private ObservableCollection<string> selectedInsertions = new ObservableCollection<string>();
         private ObservableCollection<string> selectedOptions = new ObservableCollection<string>();
 
         private CustomListData optionsBC = new CustomListData();
         private CustomListData insertionsBC = new CustomListData();
-        private CustomListData emptyList = new CustomListData();
-        private CustomStringData emptyString = new CustomStringData();
-
-        private Binding bindingEmptyList = new Binding("CustomDataProperty");
+        
         private Binding bindingAjouts = new Binding("Screen.AjoutsBC");
         private Binding bindingInsertions = new Binding("CustomDataProperty");
         private Binding bindingOptions = new Binding("CustomDataProperty");
-
-        private Binding bindingEmptyString = new Binding("CustomDataProperty");
 
         private CultureInfo cultureInfo;
         private NumberStyles style;
@@ -47,27 +39,17 @@ namespace SilverlightCustomControls
             // THIS SETS THE FRAMEWORK ELEMENT'S CULTURE TO THE CURRENT CULTURE !! //
             Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
 
-            // Empty List Binding
-            emptyList.CustomDataProperty = EMPTY_LIST;
-            bindingEmptyList.Source = emptyList;
-            bindingEmptyList.Mode = BindingMode.OneWay;
-
-            // Empty String binding
-            emptyString.CustomDataProperty = string.Empty;
-            bindingEmptyString.Source = emptyString;
-            bindingEmptyString.Mode = BindingMode.OneWay;
-
             // Selected BC insertions binding
             insertionsBC.CustomDataProperty = selectedInsertions;
             bindingInsertions.Source = insertionsBC;
-            bindingInsertions.Mode = BindingMode.OneWay;
-            bindingInsertions.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
+            bindingInsertions.Mode = BindingMode.TwoWay;
+            bindingInsertions.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
 
             // Selected Options binding
             optionsBC.CustomDataProperty = selectedOptions;
             bindingOptions.Source = optionsBC;
-            bindingOptions.Mode = BindingMode.OneWay;
-            bindingOptions.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
+            bindingOptions.Mode = BindingMode.TwoWay;
+            bindingOptions.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             
             // AjoutsBC binding
             bindingAjouts.Mode = BindingMode.OneWay;
@@ -76,13 +58,26 @@ namespace SilverlightCustomControls
             style = (NumberStyles.AllowDecimalPoint | NumberStyles.AllowCurrencySymbol) ^ NumberStyles.AllowThousands;
 
             InitializeComponent();
-            
-            listBoxOptions.SetBinding(ItemsControl.ItemsSourceProperty, bindingOptions);
+
+            listBoxAjout.SetBinding(ItemsControl.ItemsSourceProperty, bindingAjouts);
             listBoxInsertions.SetBinding(ItemsControl.ItemsSourceProperty, bindingInsertions);
+            listBoxOptions.SetBinding(ItemsControl.ItemsSourceProperty, bindingOptions);
 
             CheckBC();
 
             BORDER = AutoCompleteModele.BorderBrush;
+        }
+
+        public void Clear()
+        {
+            AutoCompleteModele.SelectedItem = null;
+            AutoCompleteModele.Text = string.Empty;
+            AutoCompleteItem.SelectedItem = null;
+            AutoCompleteItem.Text = string.Empty;
+            TextBoxAutre.Text = string.Empty;
+            txtDescription.Text = string.Empty;
+            txtPrix.Text = string.Empty;
+            txtQuantite.Text = string.Empty;
         }
 
         private void ReinitBC()
@@ -90,6 +85,8 @@ namespace SilverlightCustomControls
             listBoxAjout.SelectedItem = null;
             AutoCompleteInsertions.Text = string.Empty;
             AutoCompleteOptions.Text = string.Empty;
+            selectedInsertions.Clear();
+            selectedOptions.Clear();
         }
 
         /**
@@ -133,7 +130,8 @@ namespace SilverlightCustomControls
         private void SetInsertionsBC(List<string> insertions)
         {
             selectedInsertions.Clear();
-            selectedInsertions.Concat(insertions);
+            foreach (var item in insertions)
+                selectedInsertions.Add(item);
         }
 
         private List<string> GetOptionsBC()
@@ -144,7 +142,8 @@ namespace SilverlightCustomControls
         private void SetOptionsBC(List<string> options)
         {
             selectedOptions.Clear();
-            selectedOptions.Concat(options);
+            foreach (var item in options)
+                selectedOptions.Add(item);
         }
 
         public Tuple<string, int, decimal> GetProjetProduit()
@@ -187,7 +186,6 @@ namespace SilverlightCustomControls
             {
                 if (focusElement.Equals((FrameworkElement)sender))
                 {
-
                     switch (sender.GetType().Name)
                     {
                         case "AutoCompleteBox":
@@ -233,27 +231,32 @@ namespace SilverlightCustomControls
         {
             if (active)
             {
-                listBoxAjout.SetBinding(ItemsControl.ItemsSourceProperty, bindingAjouts);
+                listBoxAjout.IsEnabled = true;
+                listBoxInsertions.IsEnabled = true;
+                listBoxOptions.IsEnabled = true;
+
                 AutoCompleteInsertions.IsEnabled = true;
                 AutoCompleteOptions.IsEnabled = true;
-                listBoxInsertions.SetBinding(ItemsControl.ItemsSourceProperty, bindingInsertions);
+                
                 btnAdd.IsEnabled = true;
                 btnRemove.IsEnabled = true;
                 btnAddOption.IsEnabled = true;
                 btnRemoveOption.IsEnabled = true;
-                listBoxOptions.SetBinding(ItemsControl.ItemsSourceProperty, bindingOptions);
             }
             else
             {
-                listBoxAjout.SetBinding(ItemsControl.ItemsSourceProperty, bindingEmptyList);
+                listBoxAjout.IsEnabled = false;
+                listBoxInsertions.IsEnabled = false;
+                listBoxOptions.IsEnabled = false;
+
                 AutoCompleteInsertions.IsEnabled = false;
                 AutoCompleteOptions.IsEnabled = false;
-                listBoxInsertions.SetBinding(ItemsControl.ItemsSourceProperty, bindingEmptyList);
+
                 btnAdd.IsEnabled = false;
                 btnRemove.IsEnabled = false;
                 btnAddOption.IsEnabled = false;
                 btnRemoveOption.IsEnabled = false;
-                listBoxOptions.SetBinding(ItemsControl.ItemsSourceProperty, bindingEmptyList);
+
                 ReinitBC();
             }
         }
@@ -318,6 +321,11 @@ namespace SilverlightCustomControls
             if (AutoCompleteModele.SelectedItem == null && AutoCompleteItem.SelectedItem == null && TextBoxAutre.Text.Equals(string.Empty))
             {
                 AutoCompleteModele.BorderBrush = RED;
+                return false;
+            }
+
+            if (txtTotal.Foreground == RED)
+            {
                 return false;
             }
 
