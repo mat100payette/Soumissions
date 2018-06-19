@@ -720,15 +720,8 @@
         <TextBlock x:Name="txtCie" HorizontalAlignment="Left" Margin="102,134,0,0" TextWrapping="Wrap" Text="Cie:" VerticalAlignment="Top" 
                    FontFamily="Arial" FontSize="14.667" TextAlignment="Right"/>
 
-        <ComboBox x:Name="comboCie" HorizontalAlignment="Left" Height="22" Margin="150,128,0,0" VerticalAlignment="Top" Width="245" SelectedIndex="0" 
-                  SelectedItem="{Binding Screen.ProjetProperty.VenduCie, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontFamily="Arial" FontSize="12" Background="White" BorderBrush="Black">
-            <ComboBoxItem Content="{Binding Screen.ProjetProperty.Ingenieur}"
-                          FontSize="10" FontFamily="Arial"/>
-            <ComboBoxItem Content="{Binding Screen.ProjetProperty.Entrepreneur}"
-                          FontSize="10" FontFamily="Arial"/>
-            <ComboBoxItem Content="{Binding Screen.ProjetProperty.Distributeur}"
-                          FontSize="10" FontFamily="Arial"/>
-        </ComboBox>
+        <ComboBox x:Name="comboCie" HorizontalAlignment="Left" Height="22" Margin="150,128,0,0" VerticalAlignment="Top" Width="245"
+                  FontFamily="Arial" FontSize="12" Background="White" BorderBrush="Black"/>
 
         <TextBlock x:Name="txtExpedier" HorizontalAlignment="Left" Height="20" Margin="348,107,0,0" TextWrapping="Wrap" Text="EXPÉDIER À:" 
                    VerticalAlignment="Top" Width="156" FontSize="12" FontFamily="Arial" FontWeight="Bold" TextDecorations="Underline" TextAlignment="Right"/>

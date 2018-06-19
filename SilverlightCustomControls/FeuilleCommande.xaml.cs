@@ -181,5 +181,16 @@ namespace SilverlightCustomControls
             }
         }
 
+        public void SetVenduASource(List<string> list, string selected)
+        {
+            comboCie.ItemsSource = list;
+            comboCie.SelectedItem = selected;
+        }
+
+        public void SetVenduSelectionChanged(SelectionChangedEventHandler handler)
+        {
+            comboCie.SelectionChanged -= handler;
+            comboCie.SelectionChanged += handler;
+        }
     }
 }

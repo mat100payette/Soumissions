@@ -7,7 +7,7 @@ namespace LightSwitchApplication
     {
         partial void Application_Initialize()
         {
-            this.CreateDataWorkspace().ApplicationData.CleanProduits().FirstOrDefault();
+            //this.CreateDataWorkspace().ApplicationData.CleanProduits().FirstOrDefault();
         }
     }
 }

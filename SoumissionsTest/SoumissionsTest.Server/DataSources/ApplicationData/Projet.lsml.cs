@@ -1,7 +1,6 @@
 ﻿using Microsoft.LightSwitch;
 using System.Linq;
 using System.Collections.Generic;
-using LightSwitchApplication.UserCode.Shared;
 
 namespace LightSwitchApplication
 {
@@ -61,15 +60,12 @@ namespace LightSwitchApplication
             else
             {
                 ProjetEtape projetEtape = ProjetEtapes.Where(pe => pe.Etape == EtapeEnCours && pe.Projet.Equals(this)).SingleOrDefault();
-                
-                tempTotal = projetEtape == null ? (ProjetProduits.Any() ? (Taux == 0) ? decimal.Zero : SousTotal * Taux : projetEtape.Estime) : decimal.Zero;
-            }
 
-            if (EtapeEnCours != null)
-            {
-                ProjetEtape pEtape = ProjetEtapes.Where(pe => pe.Etape == EtapeEnCours).First();
-                if (pEtape.Estime != Total)
-                    pEtape.Estime = Total;
+                tempTotal = projetEtape == null ?
+                    decimal.Zero : 
+                    ProjetProduits.Any() ?
+                        SousTotal * Taux : 
+                        projetEtape.Estime;
             }
 
             Total = tempTotal;

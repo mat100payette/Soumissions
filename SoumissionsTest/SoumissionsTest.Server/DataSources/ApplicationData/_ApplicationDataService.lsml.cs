@@ -115,6 +115,7 @@ namespace LightSwitchApplication
                     Directory.CreateDirectory(projectPath + @"\4_FABRICATION\ÉLECTRIQUE\5_PIÈCES SPÉCIALES\OBSELÈTE");
                     Directory.CreateDirectory(projectPath + @"\4_FABRICATION\ÉLECTRIQUE\6_NAGAS");
                     Directory.CreateDirectory(projectPath + @"\4_FABRICATION\TRAIN DE GAZ");
+                    Directory.CreateDirectory(projectPath + @"\4_FABRICATION\SOLIN FABRICATION TÔLERIE MIRABEL");
 
                     Directory.CreateDirectory(projectPath + @"\5_LOGISTIQUE");
                     Directory.CreateDirectory(projectPath + @"\5_LOGISTIQUE\BILL OF LADING");
@@ -210,6 +211,11 @@ namespace LightSwitchApplication
         partial void CleanProduits_PreprocessQuery(ref IQueryable<ServerAction> query)
         {
             DBExtension.CleanProduits();
+        }
+
+        partial void Projets_Updating(Projet entity)
+        {
+            entity.UpdateTotal();
         }
     }
 }

@@ -22,7 +22,7 @@
     <ApplicationServerType>IIS</ApplicationServerType>
     <AuthenticationType>None</AuthenticationType>
     <ApplicationName>Soumissions</ApplicationName>
-    <AssemblyVersion>1.1.130.0</AssemblyVersion>
+    <AssemblyVersion>1.1.139.0</AssemblyVersion>
     <ServiceDefinitionFile>ServiceDefinition.csdef</ServiceDefinitionFile>
     <ServiceConfigurationFile>ServiceConfiguration.cscfg</ServiceConfigurationFile>
     <SqlExpressInstanceName>(LocalDB)\MSSQLLocalDB</SqlExpressInstanceName>
@@ -31,7 +31,7 @@
     <AdministratorFullName />
     <AdministratorUserName />
     <AllowUntrustedCertificate>False</AllowUntrustedCertificate>
-    <DeployDatabase>True</DeployDatabase>
+    <DeployDatabase>False</DeployDatabase>
     <AddAdministrator>True</AddAdministrator>
     <BootstrapperComponentsUrl />
     <DefaultInstallLocation>SoumissionsTest</DefaultInstallLocation>
@@ -173,7 +173,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">
       <Install>True</Install>
-      <Name>.NETFramework,Version=v4.0</Name>
+      <Name>.NETFramework,Version=v4.6</Name>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
       <Install>True</Install>

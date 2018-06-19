@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.LightSwitch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,9 +16,14 @@ namespace LightSwitchApplication
 
         public void SetProjetProduitInfo(Tuple<string, int, decimal> info)
         {
-            this.Description = info.Item1;
-            this.Quantite = info.Item2;
-            this.PrixUnitaire = info.Item3;
+            if (Description != info.Item1)
+                Description = info.Item1;
+
+            if (Quantite != info.Item2)
+                Quantite = info.Item2;
+
+            if (PrixUnitaire != info.Item3)
+                PrixUnitaire = info.Item3;
         }
 
         partial void ProjetProduit_Created()
@@ -47,21 +53,24 @@ namespace LightSwitchApplication
             Projet.UpdateTotal();
         }
 
-        public void DeleteTags()
+        public void DeleteTags(List<int> idsToDelete = null)
         {
-            List<int> ids = ProduitsProduction.Select(pp => pp.Id).ToList();
+            // By default, delete all tags.
+            List<int> ids = idsToDelete == null ? ProduitsProduction.Select(pp => pp.Id).ToList() : idsToDelete;
             foreach (int id in ids)
             {
-                var tag = ProduitsProduction.Single(pp => pp.Id == id);
-                ProduitsProduction.Remove(tag);
-                tag.Delete();
+                List<ProduitProduction> pp = DataWorkspace.ApplicationData.ProduitsProduction.GetQuery().Execute().Where(p => p.Id == id).ToList();
+                if (pp.Any())
+                    pp.First().Delete();
             }
         }
 
-        public void CreateTags(int qty)
+        public void CreateTags(int qty, bool deleteAll = false)
         {
-            DeleteTags();
-            for (int i = 0; i < qty; i++)
+            if (deleteAll)
+                DeleteTags();
+
+            for (int i = ProduitsProduction.Count(); i < qty; i++)
             {
                 ProduitProduction tag = ProduitsProduction.AddNew();
                 tag.ProjetProduit = this;

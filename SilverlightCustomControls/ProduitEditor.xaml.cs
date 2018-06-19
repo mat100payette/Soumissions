@@ -108,7 +108,7 @@ namespace SilverlightCustomControls
                 AutoCompleteModele.SelectedItem = produit.Item1;
                 AutoCompleteItem.SelectedItem = produit.Item2;
                 TextBoxAutre.Text = produit.Item3;
-                listBoxAjout.SelectedItem = produit.Item4;
+                listBoxAjout.SelectedItem = listBoxAjout.Items.SingleOrDefault(i => i.ToString() == produit.Item4);
                 SetInsertionsBC(produit.Item5);
                 SetOptionsBC(produit.Item6);
             }

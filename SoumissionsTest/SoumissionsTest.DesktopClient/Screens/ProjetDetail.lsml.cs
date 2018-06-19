@@ -9,35 +9,62 @@ using System.Collections.Generic;
 using LightSwitchApplication.UserCode.Shared;
 using System.Windows;
 using Microsoft.LightSwitch.Threading;
+using System.ComponentModel;
 
 namespace LightSwitchApplication
 {
     public partial class ProjetDetail
     {
+        private ModalWindow windowTags;
+        private Button tagsBtn;
+        private ListBox tagsList;
+        private int nbTagsToDelete = 0;
+        private bool deleteTagsClicked = false;
         private ModalWindow windowProduit;
         private ProduitEditor editor;
+        private bool loadProduitInfo;
         private Button editorBtn;
         private string editorBtnLabel;
         private ModalWindow windowCommande;
+        private FeuilleCommande commande;
         private EtapesControl etapesControl;
         private Tuple<string, string, string, string, List<string>, List<string>> selectedProduitInfo;
         private Tuple<string, int, decimal> selectedProjetProduitInfo;
         private bool isNewProduit = false;
+        private List<ProduitProduction> tags;
 
-        partial void ProjetDetail_InitializeDataWorkspace(List<IDataService> saveChangesTo)
+        partial void ProjetDetail_Created()
         {
-            windowProduit = new ModalWindow(ProjetProduits, "NouveauProduit", "Nouveau Produit");
-            windowCommande = new ModalWindow(ProjetProduits, "Commande", "Commande");
+            windowProduit = new ModalWindow(this, "NouveauProduit", "Nouveau Produit", editorClosed);
+            windowCommande = new ModalWindow(this, "Commande", "Commande");
+            windowTags = new ModalWindow(this, "DeleteTags", "Tags à retirer", onClosing: tagsClosing);
 
             this.FindControl("Modeles").ControlAvailable += ((o, e) =>
             {
                 editor = (ProduitEditor)e.Control;
+                if (loadProduitInfo)
+                {
+                    editor.SetProduit(selectedProduitInfo);
+                    editor.SetProjetProduit(selectedProjetProduitInfo);
+                }
             });
 
-            this.FindControl("Ajouter").ControlAvailable += ((o, e) =>
+            this.FindControl("AjouterPP").ControlAvailable += ((o, e) =>
             {
                 editorBtn = (Button)e.Control;
                 editorBtn.Content = editorBtnLabel;
+            });
+
+            this.FindControl("DeleteTagsBtn").ControlAvailable += ((o, e) =>
+            {
+                tagsBtn = (Button)e.Control;
+            });
+
+            this.FindControl("ListTags").ControlAvailable += ((o, e) =>
+            {
+                tagsList = (ListBox)e.Control;
+                tagsList.DisplayMemberPath = "Tag";
+                tagsList.ItemsSource = tags;
             });
 
             this.FindControl("Etapes").ControlAvailable += ((o, e) =>
@@ -45,22 +72,29 @@ namespace LightSwitchApplication
                 etapesControl = (EtapesControl)e.Control;
             });
 
-            // Wire up an event to detect when the Modal window is closed
-            this.FindControl("NouveauProduit").ControlAvailable += ((o, e) =>
+            this.FindControl("Projet").ControlAvailable += ((o, e) =>
             {
-                ModalWindow controlProduits = e.Control as ModalWindow;
-
-                ChildWindow window = (ChildWindow)e.Control;
-                window.Closed += new EventHandler(Window_Closed);
+                commande = (FeuilleCommande)e.Control;
+                commande.SetVenduSelectionChanged(CommandeVenduSelectionChanged);
+                commande.SetVenduASource(new List<string>() {
+                    ProjetProperty.Ingenieur == null ? string.Empty : ProjetProperty.Ingenieur.Entreprise,
+                    ProjetProperty.Entrepreneur == null ? string.Empty : ProjetProperty.Entrepreneur.Entreprise,
+                    ProjetProperty.Distributeur == null ? string.Empty : ProjetProperty.Distributeur.Entreprise
+                }, ProjetProperty.VenduCie);
             });
-        }
-
-        partial void ProjetDetail_Created()
-        {
-            windowProduit.Initialise();
-            windowCommande.Initialise();
 
             etapesControl.SetEtapeChanged(EtapeChanged);
+        }
+
+        private void CommandeVenduSelectionChanged(object o, SelectionChangedEventArgs e)
+        {
+            ComboBox combo = o as ComboBox;
+            if (combo.SelectedItem != null)
+            {
+                string selected = combo.SelectedItem.ToString();
+                if (selected != ProjetProperty.VenduCie)
+                    ProjetProperty.VenduCie = selected;
+            }
         }
 
         private void EtapeChanged(object o, SelectionChangedEventArgs e)
@@ -130,8 +164,6 @@ namespace LightSwitchApplication
                 {
                     Details.Dispatcher.BeginInvoke(() =>
                     {
-                        DataWorkspace workspace = DataWorkspace;
-
                         ProjetProduit selectedPP = isNewProduit ? ProjetProduits.AddNew() : ProjetProduits.SelectedItem;
                         Produit newProduit = null;
 
@@ -141,16 +173,17 @@ namespace LightSwitchApplication
 
                             Details.Dispatcher.BeginInvoke(() =>
                             {
-                                newProduit = Produit.CreateProduit(produitInfo, workspace);
-                                Produit existingProduit = newProduit.ExistsOther(workspace);
+                                newProduit = Produit.CreateProduit(produitInfo, DataWorkspace);
+                                Produit existingProduit = newProduit.ExistsOther(DataWorkspace);
 
                                 Dispatchers.Main.BeginInvoke(() =>
                                 {
                                     selectedPP.SetProjetProduitInfo(editor.GetProjetProduit());
                                     editor.ResetColors();
 
+                                    // If there's already a Produit like that, discard the newly created identical one.
                                     if (existingProduit != null)
-                                    {
+                                    {   
                                         selectedPP.Produit = existingProduit;
                                         newProduit.Details.DiscardChanges();
                                     }
@@ -161,24 +194,57 @@ namespace LightSwitchApplication
 
                                     Details.Dispatcher.BeginInvoke(() =>
                                     {
-                                        if (!workspace.ApplicationData.Details.GetChanges().Any(c => c.Details.ValidationResults.HasErrors))
+                                        bool needsTagDeletion = false;
+                                        if (!DataWorkspace.ApplicationData.Details.GetChanges().Any(c => c.Details.ValidationResults.HasErrors))
                                         {
-                                            workspace.ApplicationData.UpdateModeles().FirstOrDefault();
-
-                                            if (selectedPP.Produit.Modele != null)
-                                                selectedPP.CreateTags(selectedPP.Quantite);
+                                            // If the product changed, delete all tags and create new ones
+                                            if (selectedPP.Details.Properties.Produit.IsChanged)
+                                            {
+                                                // If the product is no longer a model (i.e. Item or Autre), delete tags
+                                                if (selectedPP.Produit.Modele == null) {
+                                                    selectedPP.DeleteTags();
+                                                }
+                                                // Otherwise just delete all tags and create new ones
+                                                else
+                                                    selectedPP.CreateTags(selectedPP.Quantite, true);
+                                            }
                                             else
-                                                selectedPP.DeleteTags();
-
-                                            workspace.ApplicationData.SaveChanges();
+                                            {
+                                                // If the quantity changed, check the scenario
+                                                if (selectedPP.Details.Properties.Quantite.IsChanged)
+                                                {
+                                                    // If we add tags, just create them
+                                                    if (selectedPP.Details.Properties.Quantite.OriginalValue < selectedPP.Quantite) {
+                                                        selectedPP.CreateTags(selectedPP.Quantite);
+                                                    }
+                                                    // If we remove tags
+                                                    else
+                                                    {
+                                                        // If the quantity is 0, delete all tags
+                                                        if (selectedPP.Quantite == 0)
+                                                            selectedPP.DeleteTags();
+                                                        // Else, have the user pick the tags to delete
+                                                        else
+                                                        {
+                                                            needsTagDeletion = true;
+                                                            nbTagsToDelete = selectedPP.Details.Properties.Quantite.OriginalValue - selectedPP.Quantite;
+                                                            tags = selectedPP.ProduitsProduction.ToList();
+                                                            windowTags.OpenModalWindow();
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
 
                                         SetSelection();
 
-                                        Dispatchers.Main.BeginInvoke(() =>
+                                        if (!needsTagDeletion)
                                         {
-                                            windowProduit.DialogOk();
-                                        });
+                                            Dispatchers.Main.BeginInvoke(() =>
+                                            {
+                                                windowProduit.CloseModalWindow();
+                                            });
+                                        }
                                     });
                                 });
                             });
@@ -192,59 +258,49 @@ namespace LightSwitchApplication
         {
             isNewProduit = true;
             editorBtnLabel = "Ajouter";
-            windowProduit.setEntityName("Nouveau Produit");
-            windowProduit.AddEntity();
+            loadProduitInfo = false;
+            windowProduit.setWindowName("Nouveau Produit");
+            windowProduit.OpenModalWindow();
         }
 
         partial void ProjetProduitsEditSelected_Execute()
         {
             isNewProduit = false;
-            LoadProduitInfo();
             editorBtnLabel = "Modifier";
-            windowProduit.setEntityName("Modifier Produit");
-            windowProduit.ViewEntity();
+            loadProduitInfo = true;
+            windowProduit.setWindowName("Modifier Produit");
+            windowProduit.OpenModalWindow();
         }
 
-        private void LoadProduitInfo()
-        {
-            Dispatchers.Main.BeginInvoke(() =>
-            {
-                // TODO: Fix when editor not loaded yet.
-                editor.SetProduit(selectedProduitInfo);
-                editor.SetProjetProduit(selectedProjetProduitInfo);
-            });
-        }
-
-        void Window_Closed(object sender, EventArgs e)
+        private void editorClosed(object sender, EventArgs e)
         {
             Dispatchers.Main.BeginInvoke(() =>
             {
                 editor.Clear();
             });
+        }
 
-            ChildWindow window = (ChildWindow)sender;
-            
-            if (!(window.DialogResult.HasValue))
+        private void tagsClosing(object sender, CancelEventArgs e)
+        {
+            if (deleteTagsClicked)
             {
-                EntityChangeSet changes = DataWorkspace.ApplicationData.Details.GetChanges();
-                var added = changes.AddedEntities;
-
-                foreach (Produit produit in added.OfType<Produit>())
-                    produit.Details.DiscardChanges();
-
-                foreach (ProjetProduit projetProduit in added.OfType<ProjetProduit>())
-                    projetProduit.Details.DiscardChanges();
-
-                foreach (ProduitOptionBC produitOptionBC in added.OfType<ProduitOptionBC>())
-                    produitOptionBC.Details.DiscardChanges();
-
-                foreach (ModeleInsere modeleInsere in added.OfType<ModeleInsere>())
-                    modeleInsere.Details.DiscardChanges();
-
-                if (ProjetProduits.Any())
+                if (tagsList.SelectedItems.Count == nbTagsToDelete)
                 {
-                    //ProjetProduits.SelectedItem = ProjetProduits.Last();
+                    Details.Dispatcher.BeginInvoke(() =>
+                    {
+                        ProjetProduits.SelectedItem.DeleteTags(tagsList.SelectedItems.Cast<ProduitProduction>().Select(t => t.Id).ToList());
+                        Dispatchers.Main.BeginInvoke(() =>
+                        {
+                            windowProduit.CloseModalWindow();
+                        });
+                    });
                 }
+                else
+                {
+                    MessageBox.Show("Vous devez choisir " + nbTagsToDelete + " tag" + (nbTagsToDelete > 1 ? "s" : " ") + " à retirer");
+                    e.Cancel = true;
+                }
+                deleteTagsClicked = false;
             }
         }
 
@@ -254,7 +310,7 @@ namespace LightSwitchApplication
         partial void Commande_Execute()
         {
             ProjetProperty.DateCommande = DateTime.Now;
-            windowCommande.ViewEntity();
+            windowCommande.OpenModalWindow();
         }
 
         /// <summary>
@@ -302,7 +358,7 @@ namespace LightSwitchApplication
             {
                 ComboBox cbEtapes = etapesControl.GetComboBox();
                 cbEtapes.DisplayMemberPath = ProjetEtape.DetailsClass.PropertySetProperties.Etape.Name();
-                cbEtapes.ItemsSource = ProjetEtapes.Select(pe => pe).OrderBy(pe => pe.Etape.Ordre).ToList();
+                cbEtapes.ItemsSource = ProjetEtapes.Select(pe => pe).ToList().OrderBy(pe => pe.Etape.Ordre).ToList();
                 cbEtapes.SelectedItem = ProjetEtapes.SingleOrDefault(pe => pe.Etape == ProjetProperty.EtapeEnCours);
                 cbEtapes.Tag = cbEtapes.SelectedItem;
                 ProjetEtapes.SelectedItem = cbEtapes.SelectedItem as ProjetEtape;
@@ -326,13 +382,6 @@ namespace LightSwitchApplication
             });
         }
 
-        partial void ProjetDetail_Saving(ref bool handled)
-        {
-            // Écrivez votre code ici.
-            var ch = DataWorkspace.ApplicationData.Details.GetChanges();
-            ;
-        }
-
         partial void ProjetProduits_SelectionChanged()
         {
             SetSelection();
@@ -352,6 +401,12 @@ namespace LightSwitchApplication
                     selectedProjetProduitInfo = selected.GetProjetProduitInfo();
                 });
             }
+        }
+
+        partial void DeleteTagsBtn_Execute()
+        {
+            deleteTagsClicked = true;
+            windowTags.CloseModalWindow();
         }
     }
 }

@@ -24,7 +24,7 @@
             DataType="CollectionView$ProduitProduction">
             <ContentItem.Attributes>
               <DisplayName
-                Value="Suivi Produits" />
+                Value="Produits Dessin D'Atelier" />
             </ContentItem.Attributes>
             <ContentItem.DataSource>
               <ScreenExpressionTree>
@@ -263,22 +263,6 @@
                 </ContentItem.DataSource>
               </ContentItem>
             </ContentItem>
-            <ContentItem.CommandItems>
-              <ContentItem
-                Name="ProduitsProductionQuery_DeleteSelected"
-                Kind="Command">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression
-                        Member="SuiviProduits/Properties[ProduitsProductionQuery]" />
-                      <CallExpression
-                        Target="DeleteSelected" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-              </ContentItem>
-            </ContentItem.CommandItems>
             <ContentItem.PropertySources>
               <ControlPropertySource
                 Property="Microsoft.LightSwitch.RichClient:DataGrid/Properties[ShowVirtualRow]">

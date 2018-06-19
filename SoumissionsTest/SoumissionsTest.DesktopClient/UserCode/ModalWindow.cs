@@ -1,108 +1,73 @@
 ﻿using System;
 using System.Windows.Controls;
-using Microsoft.LightSwitch;
 using Microsoft.LightSwitch.Client;
 using Microsoft.LightSwitch.Presentation;
 using Microsoft.LightSwitch.Presentation.Extensions;
+using System.ComponentModel;
 
 namespace LightSwitchApplication.UserCode
 {
     public class ModalWindow
     {
-        private IVisualCollection _collection;
-        private IVisualCollection _initCollection;
-        private string _dialogName;
-        private string _entityName;
+        private bool _initialized = false;
+        private string _controlName;
+        private string _windowName;
         private IScreenObject _screen;
         private IContentItemProxy _window;
-        private IEntityObject _entity;
+        private EventHandler _onClosed;
+        private EventHandler<CancelEventArgs> _onClosing;
 
-        public ModalWindow(IVisualCollection visualCollection, string dialogName, string entityName = "")
+        public ModalWindow(IScreenObject screen, string controlName, string windowName = "", 
+            EventHandler onClosed = null, EventHandler<CancelEventArgs> onClosing = null)
         {
-            _collection = visualCollection;
-            _initCollection = visualCollection;
-            _dialogName = dialogName;
-            _entityName = ((entityName != "") ? entityName : _collection.Details.GetModel().ElementType.Name);
-            _screen = _collection.Screen;
+            _controlName = controlName;
+            _windowName = windowName;
+            _screen = screen;
+            _onClosed = onClosed;
+            _onClosing = onClosing;
+
+            Initialise();
         }
 
-        public void Initialise()
+        private void Initialise()
         {
-            _window = _screen.FindControl(_dialogName);
+            _window = _screen.FindControl(_controlName);
 
             _window.ControlAvailable += (object s, ControlAvailableEventArgs e) => {
-                var window = (ChildWindow)e.Control;
+                if (!_initialized)
+                {
+                    var window = (ChildWindow)e.Control;
 
-                window.Closed += (object s1, EventArgs e1) => {
-                    DialogClosed(s1);
-                };
+                    if (_onClosed != null)
+                    {
+                        window.Closed -= _onClosed;
+                        window.Closed += _onClosed;
+                    }
+
+                    if (_onClosing != null)
+                    {
+                        window.Closing -= _onClosing;
+                        window.Closing += _onClosing;
+                    }
+                }
+
+                _initialized = true;
             };
         }
 
-        public void setEntityName(string name)
+        public void setWindowName(string name)
         {
-            _entityName = name;
+            _windowName = name;
         }
 
-        public bool CanAdd()
+        public void OpenModalWindow()
         {
-            return (_collection.CanAddNew == true);
+            _screen.OpenModalWindow(_controlName);
         }
 
-        public bool CanView()
+        public void CloseModalWindow()
         {
-            return (_collection.SelectedItem != null);
-        }
-
-        public void AddEntity()
-        {
-            _window.DisplayName = string.Format("Ajouter {0}", _entityName);
-
-            OpenModalWindow();
-        }
-
-        public void ViewEntity()
-        {
-            _window.DisplayName = string.Format("{0}", _entityName);
-
-            OpenModalWindow();
-        }
-
-        private void OpenModalWindow()
-        {
-            _collection = _initCollection;
-            _entity = _collection.SelectedItem as IEntityObject;
-            _screen.OpenModalWindow(_dialogName);
-        }
-
-        public void DialogOk()
-        {
-            _screen.CloseModalWindow(_dialogName);
-        }
-
-        public void DialogCancel()
-        {
-            _screen.CloseModalWindow(_dialogName);
-
-            DiscardChanges();
-        }
-
-        public void DialogClosed(object sender)
-        {
-            var window = (ChildWindow)sender;
-
-            if (window.DialogResult.HasValue == false)
-            {
-                DiscardChanges();
-            }
-        }
-
-        private void DiscardChanges()
-        {
-            if (_entity != null)
-            {
-                _entity.Details.DiscardChanges();
-            }
+            _screen.CloseModalWindow(_controlName);
         }
     }
 }

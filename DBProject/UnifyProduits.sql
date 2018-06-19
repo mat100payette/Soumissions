@@ -1,6 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[UnifyProduits]
-	@ProduitId int = 0,
-	@ProduitNom nvarchar = ''
+	@ProduitId int = 0
 AS BEGIN
 
 	WHILE(1 = 1)
@@ -12,7 +11,7 @@ AS BEGIN
 	  UPDATE dbo.ProjetProduits SET ProjetProduit_Produit = @ProduitId 
 	  WHERE (SELECT TOP 1 Nom FROM dbo.Produits WHERE Id = ProjetProduit_Produit) = (SELECT TOP 1 Nom FROM dbo.Produits WHERE Id = @ProduitId) 
 
-	  DELETE FROM dbo.Produits WHERE Id > @ProduitId
+	  DELETE FROM dbo.Produits WHERE Id > @ProduitId AND Nom LIKE (SELECT TOP 1 Nom FROM dbo.Produits WHERE Id = @ProduitId)
 	END
 
 END
