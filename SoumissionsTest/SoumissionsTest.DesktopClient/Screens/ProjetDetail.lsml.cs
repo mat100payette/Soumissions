@@ -125,7 +125,7 @@ namespace LightSwitchApplication
                             else
                             {
                                 ProjetProperty.ProjetEtapes.Where(pe => pe.Etape.Ordre > selectedProjetEtape.Etape.Ordre).ToList()
-                                    .ForEach((pe) => { pe.DateDebut = null; pe.DateFin = null; pe.Estime = 0M; pe.DateProdEstime = null; pe.Active = false; });
+                                    .ForEach((pe) => { pe.DateDebut = null; pe.DateFin = null; pe.Estime = 0M; pe.DateProdEstime = null; });
                                 ProjetProperty.ProjetEtapes.Single(et => et.Etape == ProjetProperty.EtapeEnCours).DateFin = DateTime.Now;
                                 ProjetProperty.EtapeEnCours = selectedProjetEtape.Etape;
                                 ProjetProperty.ProjetEtapes.Single(et => et.Etape == ProjetProperty.EtapeEnCours).DateDebut = DateTime.Now;
@@ -164,7 +164,15 @@ namespace LightSwitchApplication
                 {
                     Details.Dispatcher.BeginInvoke(() =>
                     {
-                        ProjetProduit selectedPP = isNewProduit ? ProjetProduits.AddNew() : ProjetProduits.SelectedItem;
+                        ProjetProduit selectedPP;
+                        if (isNewProduit) {
+                            selectedPP = new ProjetProduit(DataWorkspace.ApplicationData.ProjetProduits);
+                            selectedPP.Projet = ProjetProperty;
+                        }
+                        else
+                        {
+                            selectedPP = ProjetProduits.SelectedItem;
+                        }
                         Produit newProduit = null;
 
                         Dispatchers.Main.BeginInvoke(() =>
@@ -195,7 +203,8 @@ namespace LightSwitchApplication
                                     Details.Dispatcher.BeginInvoke(() =>
                                     {
                                         bool needsTagDeletion = false;
-                                        if (!DataWorkspace.ApplicationData.Details.GetChanges().Any(c => c.Details.ValidationResults.HasErrors))
+                                        EntityChangeSet changes = DataWorkspace.ApplicationData.Details.GetChanges();
+                                        if (!changes.Any(c => c.Details.ValidationResults.HasErrors))
                                         {
                                             // If the product changed, delete all tags and create new ones
                                             if (selectedPP.Details.Properties.Produit.IsChanged)
@@ -234,6 +243,10 @@ namespace LightSwitchApplication
                                                     }
                                                 }
                                             }
+                                        }
+                                        else
+                                        {
+                                            var a = changes.Where(c => c.Details.ValidationResults.HasErrors).SelectMany(c => c.Details.ValidationResults.Errors);
                                         }
 
                                         SetSelection();
@@ -354,9 +367,11 @@ namespace LightSwitchApplication
         partial void ProjetEtapes_Loaded(bool succeeded)
         {
             if (Etapes == null) Etapes.Load();
+            var a = Etapes.First().Ordre;
             Dispatchers.Main.BeginInvoke(() =>
             {
                 ComboBox cbEtapes = etapesControl.GetComboBox();
+                
                 cbEtapes.DisplayMemberPath = ProjetEtape.DetailsClass.PropertySetProperties.Etape.Name();
                 cbEtapes.ItemsSource = ProjetEtapes.Select(pe => pe).ToList().OrderBy(pe => pe.Etape.Ordre).ToList();
                 cbEtapes.SelectedItem = ProjetEtapes.SingleOrDefault(pe => pe.Etape == ProjetProperty.EtapeEnCours);
@@ -392,14 +407,14 @@ namespace LightSwitchApplication
             if (ProjetProduits.SelectedItem != null)
             {
                 var selected = ProjetProduits.SelectedItem;
-                Details.Dispatcher.BeginInvoke(() =>
-                {
+                //Details.Dispatcher.BeginInvoke(() =>
+                //{
                     if (selected.Produit == null)
                         selectedProduitInfo = null;
                     else
                         selectedProduitInfo = selected.Produit.GetMainInfo();
                     selectedProjetProduitInfo = selected.GetProjetProduitInfo();
-                });
+                //});
             }
         }
 
@@ -407,6 +422,16 @@ namespace LightSwitchApplication
         {
             deleteTagsClicked = true;
             windowTags.CloseModalWindow();
+        }
+
+        partial void Info_Execute()
+        {
+            Details.Dispatcher.BeginInvoke(() => {
+                string info = DataWorkspace.ApplicationData.Details.GetChanges().ToList();
+                Dispatchers.Main.BeginInvoke(() => {
+                    MessageBox.Show(info, "Modifications", MessageBoxButton.OK);
+                });
+            });
         }
     }
 }

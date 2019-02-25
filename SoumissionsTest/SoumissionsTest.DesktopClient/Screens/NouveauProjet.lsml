@@ -262,6 +262,66 @@
                 </ContentItem.DataSource>
               </ContentItem>
               <ContentItem
+                Name="ProjetProperty_UniteExpress"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="NouveauProjet/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="UniteExpress" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="ProjetProperty_UniteStandard"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="NouveauProjet/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="UniteStandard" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="ProjetProperty_UniteCustom"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="NouveauProjet/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="UniteCustom" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="ProjetProperty_Furnace"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="NouveauProjet/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="Furnace" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
                 Name="Spacer3"
                 Kind="ScreenContent"
                 View="Microsoft.LightSwitch.RichClient:StaticLabel">

@@ -274,6 +274,66 @@
                 </ContentItem.DataSource>
               </ContentItem>
               <ContentItem
+                Name="ProjetProperty_UniteExpress"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProjetDetail/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="UniteExpress" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="ProjetProperty_UniteStandard"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProjetDetail/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="UniteStandard" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="ProjetProperty_UniteCustom"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProjetDetail/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="UniteCustom" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="ProjetProperty_Furnace"
+                Kind="Value"
+                DataType=":Boolean">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProjetDetail/Properties[ProjetProperty]" />
+                      <MemberExpression
+                        Member="Furnace" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
                 Name="Spacer2"
                 Kind="ScreenContent"
                 View="Microsoft.LightSwitch.RichClient:StaticLabel">
@@ -365,6 +425,28 @@
                     </ScreenExpressionTree>
                   </ControlPropertySource>
                 </ContentItem.PropertySources>
+              </ContentItem>
+              <ContentItem
+                Name="DateDebut"
+                Kind="Value"
+                DataType=":DateTime?"
+                View="Microsoft.LightSwitch.RichClient:DateTimeViewer">
+                <ContentItem.Attributes>
+                  <DisplayName
+                    Value="Dernier changement d'etape" />
+                </ContentItem.Attributes>
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="ProjetDetail/Properties[ProjetEtapes]" />
+                      <MemberExpression
+                        Member="SelectedItem" />
+                      <MemberExpression
+                        Member="DateDebut" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
               </ContentItem>
               <ContentItem.PropertySources>
                 <ControlPropertySource
@@ -1236,6 +1318,18 @@
               </ScreenExpressionTree>
             </ContentItem.DataSource>
           </ContentItem>
+          <ContentItem
+            Name="Info"
+            Kind="Command">
+            <ContentItem.DataSource>
+              <ScreenExpressionTree>
+                <ChainExpression>
+                  <CallExpression
+                    Target="ProjetDetail/Methods[Info]" />
+                </ChainExpression>
+              </ScreenExpressionTree>
+            </ContentItem.DataSource>
+          </ContentItem>
         </ContentItem.CommandItems>
       </ContentItem>
     </Screen.RootContentItem>
@@ -1297,6 +1391,8 @@
         Name="Cancel" />
       <ScreenMethod
         Name="DeleteTagsBtn" />
+      <ScreenMethod
+        Name="Info" />
     </Screen.Methods>
     <Screen.Properties>
       <ScreenProperty

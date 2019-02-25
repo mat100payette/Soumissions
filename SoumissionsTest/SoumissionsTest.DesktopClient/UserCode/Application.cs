@@ -1,7 +1,4 @@
-﻿using Microsoft.LightSwitch;
-using System.Linq;
-
-namespace LightSwitchApplication
+﻿namespace LightSwitchApplication
 {
     public partial class Application
     {

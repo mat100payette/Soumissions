@@ -1,6 +1,4 @@
-﻿using Microsoft.LightSwitch;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace LightSwitchApplication
 {
@@ -10,7 +8,6 @@ namespace LightSwitchApplication
         {
             Estime = 0M;
             CachedNom = string.Empty;
-            Active = false;
         }
 
         partial void Projet_Changed()
@@ -43,15 +40,9 @@ namespace LightSwitchApplication
             }
         }
 
-        partial void Active_Changed()
+        partial void Estime_Changed()
         {
-            List<ProjetEtape> projetEtapes = Projet.ProjetEtapes.OrderBy(pe => pe.Etape.Ordre).ToList();
-
-
-            if (projetEtapes.Any(pe => pe.Active && pe.Etape.Ordre > Etape.Ordre))
-            {
-                
-            }
+            Projet.UpdateTotal(false);
         }
     }
 }

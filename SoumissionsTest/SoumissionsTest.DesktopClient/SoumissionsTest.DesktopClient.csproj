@@ -44,8 +44,9 @@
     <WCFRIASERVICESSDKPath Condition=" '$(WCFRIASERVICESSDKPath)' == '' ">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\WCFRIAServices\v5.2@InstallPath)</WCFRIASERVICESSDKPath>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <SignManifests>True</SignManifests>
-    <ManifestCertificateThumbprint>38FB8A4F627774259655FD6FD9D9089E4F39E178</ManifestCertificateThumbprint>
-    <ManifestKeyFile>SoumissionsTest_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>032FFB9DDC601A42DDA7F6C999A69E87E0D346CB</ManifestCertificateThumbprint>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
     <ApplicationName>Soumissions</ApplicationName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -372,7 +373,9 @@
     <LightSwitchModel Include="Screens\NouveauProjet.lsml" />
     <LightSwitchModel Include="Screens\NouveauModele.lsml" />
     <LightSwitchModel Include="Screens\SearchModeles.lsml" />
-    <LightSwitchModel Include="Screens\ProjetDetail.lsml" />
+    <LightSwitchModel Include="Screens\ProjetDetail.lsml">
+      <SubType>Designer</SubType>
+    </LightSwitchModel>
     <LightSwitchModel Include="Screens\SearchProduits.lsml" />
     <LightSwitchModel Include="Screens\ProduitDetail.lsml" />
     <LightSwitchModel Include="Screens\SearchEtapes.lsml" />
@@ -391,6 +394,7 @@
     <LightSwitchModel Include="Screens\CommandesHebdo.lsml" />
     <LightSwitchModel Include="Screens\SuiviProduits.lsml" />
     <None Include="SoumissionsTest_1_TemporaryKey.pfx" />
+    <None Include="SoumissionsTest_2_TemporaryKey.pfx" />
     <None Include="SoumissionsTest_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,10 @@ namespace LightSwitchApplication
             Taux = 1M;
             SousTotal = 0M;
             Total = 0M;
+            UniteExpress = false;
+            UniteStandard = false;
+            UniteCustom = false;
+            Furnace = false;
 
             List<Etape> etapes = DataWorkspace.ApplicationData.EtapesQuery().Execute().ToList();
 
@@ -32,17 +36,13 @@ namespace LightSwitchApplication
         public void UpdateSousTotal()
         {
             List<ProjetProduit> produits = ProjetProduits.Where(pp => pp.Projet.Equals(this)).ToList();
-            decimal tempSousTotal;
+            decimal tempSousTotal = 0M;
 
             if (produits.Count() > 0)
-            {
-                tempSousTotal = produits.Sum(p => p.PrixTotal) + LivraisonFlatBedPrix.GetValueOrDefault(0M) + LivraisonLtlPrix.GetValueOrDefault(0M) +
-                                                                     MiseMarchePrix.GetValueOrDefault(0M) + LocationGruePrix.GetValueOrDefault(0M);
-            }
-            else
-            {
-                tempSousTotal = decimal.Zero;
-            }
+                tempSousTotal += produits.Sum(p => p.PrixTotal);
+
+            tempSousTotal += LivraisonFlatBedPrix.GetValueOrDefault(0M) + LivraisonLtlPrix.GetValueOrDefault(0M) +
+                             MiseMarchePrix.GetValueOrDefault(0M) + LocationGruePrix.GetValueOrDefault(0M);
 
             SousTotal = tempSousTotal;
         }
@@ -75,6 +75,26 @@ namespace LightSwitchApplication
         {
             // Check for empty string.
             Contact = string.IsNullOrEmpty(Contact) ? string.Empty : char.ToUpper(Contact[0]) + Contact.Substring(1);
+        }
+
+        partial void LivraisonFlatBedPrix_Changed()
+        {
+            UpdateTotal();
+        }
+
+        partial void LivraisonLtlPrix_Changed()
+        {
+            UpdateTotal();
+        }
+
+        partial void MiseMarchePrix_Changed()
+        {
+            UpdateTotal();
+        }
+
+        partial void LocationGruePrix_Changed()
+        {
+            UpdateTotal();
         }
     }
 }

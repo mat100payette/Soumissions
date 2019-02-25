@@ -32,14 +32,6 @@
           <Required />
         </EntityProperty.Attributes>
       </EntityProperty>
-      <EntityProperty
-        Name="Active"
-        PropertyType=":Boolean">
-        <EntityProperty.Attributes>
-          <Required />
-          <NotSearchable />
-        </EntityProperty.Attributes>
-      </EntityProperty>
       <NavigationProperty
         Name="Etape"
         Association="ProjetEtape_Etape"

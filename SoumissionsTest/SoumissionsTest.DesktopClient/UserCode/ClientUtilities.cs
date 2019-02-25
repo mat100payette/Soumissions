@@ -2,7 +2,6 @@
 using Microsoft.LightSwitch.Details.Framework;
 using Microsoft.LightSwitch.Details.Framework.Base;
 using Microsoft.LightSwitch.Framework.Base;
-using System;
 using System.Reflection;
 using System.Windows.Media;
 
@@ -79,6 +78,28 @@ namespace LightSwitchApplication.UserCode
             PropertyInfo pi = prop.GetType().GetInterfaces()[0].GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)[0];
             object value = pi.GetGetMethod(true).Invoke(prop, new object[] { });
             return value == null ? string.Empty : value.ToString();
+        }
+
+        public static string ToList(this EntityChangeSet set)
+        {
+            string info = string.Empty;
+
+            foreach (var entity in set.AddedEntities)
+                info += "ADDED: [" + entity.GetType().Name + "]" + entity.ToString() + "\n";
+
+            foreach (var entity in set.ModifiedEntities)
+            {
+                info += "MODIFIED: [" + entity.GetType().Name + "]" + entity.ToString() + "\n";
+                foreach (var prop in entity.ChangedProperties())
+                {
+                    info += "   " + prop.Name + ": " + prop.Value + "\n";
+                }
+            }
+
+            foreach (var entity in set.DeletedEntities)
+                info += "DELETED: [" + entity.GetType().Name + "]" + entity.ToString() + "\n";
+
+            return info;
         }
     }
 }

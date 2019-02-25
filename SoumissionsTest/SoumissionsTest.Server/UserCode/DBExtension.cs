@@ -23,7 +23,7 @@ namespace LightSwitchApplication.UserCode
 
         public static void DeleteAll()
         {
-            CallStoredProc("dbo.DeleteAll");
+            //CallStoredProc("dbo.DeleteAll");
         }
 
         public static void UnifyProduits()

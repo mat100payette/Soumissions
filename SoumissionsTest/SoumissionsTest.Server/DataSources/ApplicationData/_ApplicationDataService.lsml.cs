@@ -155,11 +155,8 @@ namespace LightSwitchApplication
         partial void ProjetEtapes_Validate(ProjetEtape entity, EntitySetValidationResultsBuilder results)
         {
             string msgDate = "La date de début d'une étape ne peut pas être inférieure à la date de fin de celle qui la précède.";
-            string msgActive = "Un projet ne peut pas avoir plus d'une étape active en même temps.";
 
             List<ProjetEtape> projetEtapes = entity.Projet.ProjetEtapes.OrderBy(pe => pe.Etape.Ordre).ToList();
-
-            if (projetEtapes.Count(pe => pe.Active) > 1) results.AddPropertyError(msgActive, entity.Details.Properties.Active);
 
             if (projetEtapes.Count > 1)
             {
